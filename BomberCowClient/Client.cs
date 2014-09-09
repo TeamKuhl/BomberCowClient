@@ -26,20 +26,30 @@ namespace BomberCowClient
         {
             this.client = new TcpClient();
 
-            // get server & connect
-            IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
-            this.client.Connect(serverEndPoint);
+            try
+            {
+                // get server & connect
+                IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+                this.client.Connect(serverEndPoint);
 
-            // get stream
-            this.clientStream = this.client.GetStream();
+                // get stream
+                this.clientStream = this.client.GetStream();
 
-            // new thread
-            Thread listener = new Thread(messageListener);
+                // new thread
+                Thread listener = new Thread(messageListener);
 
-            // start listener
-            listener.Start();
+                // start listener
+                listener.Start();
 
-            return true;
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+
         }
 
         /// <summary>
@@ -92,8 +102,21 @@ namespace BomberCowClient
                 // read message
                 ASCIIEncoding encoder = new ASCIIEncoding();
 
+                String get = encoder.GetString(message, 0, bytesRead);
+
+                // noooooooot in final version of class please becausea ääääh
+                if (get == "server_stop")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Server has stopped");
+                    Console.ResetColor();
+                    Console.WriteLine("Press any key to exit!");
+                    Console.ReadLine();
+                    Environment.Exit(0);
+                }
+
                 // print to console (debug)
-                Console.WriteLine(encoder.GetString(message, 0, bytesRead));
+                Console.WriteLine(get);
             }
         }
 

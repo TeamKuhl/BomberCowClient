@@ -10,29 +10,55 @@ namespace BomberCowClient
     {
         static void Main(string[] args)
         {
+            Console.Title = "BomberChatTest";
+
             // test
             Client client = new Client();
 
             Int64 counter = 0;
 
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("Enter your name: ");
             String name = Console.ReadLine();
 
-            client.connect("192.168.2.3", 45454);
-            client.send(name + " joined");
-
-            while (true)
+            if (client.connect("192.168.2.3", 45454))
             {
-                counter++;
-                
-                String message = Console.ReadLine();
-                if (message == "/leave")
-                {
-                    client.send(name + " leaved");
-                    Environment.Exit(0);
-                }
-                client.send(name+": "+message);
+                client.send(name + " joined");
+                Console.WriteLine("You joined the server");
 
+                Console.ResetColor();
+
+                while (true)
+                {
+                    counter++;
+
+                    String message = Console.ReadLine();
+                    if (message == "/leave")
+                    {
+                        client.send(name + " leaved");
+                        Environment.Exit(0);
+                    }
+                    else if (message == "/nick")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("New nickname: ");
+                        String oldname = name;
+                        name = Console.ReadLine();
+                        Console.WriteLine("Your name is now " + name);
+                        Console.ResetColor();
+                        client.send(oldname + " changed his name to " + name);
+
+                    }
+                    else if (message == "") { }
+                    else client.send(name + ": " + message);
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("Press any key to Exit!");
+                Console.ReadLine();
+                Environment.Exit(0);
             }
         }
     }
