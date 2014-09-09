@@ -14,10 +14,17 @@ namespace BomberCowClient
             Client client = new Client();
             client.connect("192.168.2.3", 45454);
 
+            Int64 counter = 0;
+
+            Console.Write("Enter your name: ");
+            String name = Console.ReadLine();
+
             while (true)
             {
+                counter++;
+                
                 String message = Console.ReadLine();
-                client.send(message);
+                client.send(name+": "+message);
 
             }
         }
