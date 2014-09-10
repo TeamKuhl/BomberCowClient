@@ -21,7 +21,7 @@ namespace BomberCowClient
             Console.Write("Enter your name: ");
             String name = Console.ReadLine();
 
-            if (client.connect("127.0.0.1", 45454))
+            if (client.connect("192.168.2.3", 45454))
             {
                 client.send(name + " joined");
                 Console.WriteLine("You joined the server");
