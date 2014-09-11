@@ -37,7 +37,8 @@ namespace BomberCowClient
                     if (message == "/leave")
                     {
                         client.send(name + " leaved");
-                        Environment.Exit(0);
+                        client.disconnect();
+                        //Environment.Exit(0);
                     }
                     else if (message == "/nick")
                     {
