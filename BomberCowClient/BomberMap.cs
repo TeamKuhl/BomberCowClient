@@ -19,7 +19,7 @@ namespace BomberCowClient
         private PictureBox Player2PictureBox = new PictureBox();
 
         // Size ofe the textures
-        public int BlockSize = 32;
+        public int BlockSize = 42;
         private int MapXSize;
         private int MapYSize;
 
@@ -74,6 +74,7 @@ namespace BomberCowClient
             Image img1 = BomberCowClient.Properties.Resources.png1;
             Image img2 = BomberCowClient.Properties.Resources.png2;
             Image back = BomberCowClient.Properties.Resources.back;
+            Image player = BomberCowClient.Properties.Resources.Player1;
 
             g.Clear(Color.Black);
             for (int yCounter = 0; yCounter < MapYSize; yCounter++)
@@ -97,10 +98,11 @@ namespace BomberCowClient
                     }
                 }
             }
+            g.DrawImage(player, new Point(1 * BlockSize, 2 * BlockSize));
             g.Dispose();
             img1.Dispose();
             img2.Dispose();
-
+            map.Save("map.png", System.Drawing.Imaging.ImageFormat.Png);
             // Return complete image
             return map;
         }

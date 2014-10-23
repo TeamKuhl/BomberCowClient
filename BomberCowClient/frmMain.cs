@@ -28,6 +28,9 @@ namespace BomberCowClient
         // Player dictionary
         private Dictionary<int, string> playerlist = new Dictionary<int, string>();
 
+        //set size of form
+        private Boolean fitForm = false;
+
         public frmMain()
         {
             InitializeComponent();
@@ -98,16 +101,20 @@ namespace BomberCowClient
                 // Got Map strings
                 case "Map":
                     BomberMap.createMap(message);
-                    lstChat.Invoke(new emptyFunction(delegate()
+                    if (!fitForm)
                     {
-                        lstChat.Left = this.Width - 10;
-                        lstChat.Size = new Size(322, 95);
-                    }));
-                    txtChat.Invoke(new emptyFunction(delegate()
-                    {
-                        txtChat.Left = lstChat.Left;
-                        txtChat.Size = new Size(206, 20);
-                    }));
+                        lstChat.Invoke(new emptyFunction(delegate()
+                        {
+                            lstChat.Left = this.Width - 10;
+                            lstChat.Size = new Size(322, 95);
+                        }));
+                        txtChat.Invoke(new emptyFunction(delegate()
+                        {
+                            txtChat.Left = lstChat.Left;
+                            txtChat.Size = new Size(206, 20);
+                        }));
+                        fitForm = true;
+                    }
                     break;
                 // Got player position
                 case "PlayerPosition":
