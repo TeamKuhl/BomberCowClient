@@ -16,6 +16,7 @@ namespace BomberCowClient
         private frmMain mainForm;
         private PictureBox AllPictureBox = new PictureBox();
         private PictureBox Player1PictureBox = new PictureBox();
+        private PictureBox Player2PictureBox = new PictureBox();
 
         // Size ofe the textures
         public int BlockSize = 32;
@@ -117,6 +118,15 @@ namespace BomberCowClient
             Player1PictureBox.BackgroundImage = BomberCowClient.Properties.Resources.Player1;
             AllPictureBox.Invoke(new emptyFunction(delegate() { AllPictureBox.Controls.Add(Player1PictureBox); }));
             Player1PictureBox.Parent = AllPictureBox;
+
+            Player2PictureBox.Location = new Point(0, 0);
+            Player2PictureBox.Name = "Player2PictureBox";
+            Player2PictureBox.Size = new Size(BlockSize, BlockSize);
+            Player2PictureBox.Visible = true;
+            Player2PictureBox.BackColor = Color.Transparent;
+            Player2PictureBox.BackgroundImage = BomberCowClient.Properties.Resources.Player1;
+            AllPictureBox.Invoke(new emptyFunction(delegate() { AllPictureBox.Controls.Add(Player2PictureBox); }));
+            Player2PictureBox.Parent = AllPictureBox;
         }
 
         /// <summary>
@@ -136,6 +146,17 @@ namespace BomberCowClient
                 else
                 {
                     Player1PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize);
+                }
+            }
+            if (Player == 2)
+            {
+                if (Player2PictureBox.InvokeRequired)
+                {
+                    Player2PictureBox.Invoke(new emptyFunction(delegate() { Player2PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize); }));
+                }
+                else
+                {
+                    Player2PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize);
                 }
             }
         }
