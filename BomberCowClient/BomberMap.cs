@@ -13,46 +13,53 @@ namespace BomberCowClient
 
     class BomberMap
     {
-        private Form1 mainForm;
+        private frmMain mainForm;
         private PictureBox AllPictureBox = new PictureBox();
         private PictureBox Player1PictureBox = new PictureBox();
 
+        //size ofe the textures
         public int BlockSize = 32;
-        private int MapXSize = 8;
+        private int MapXSize;
         private int MapYSize;
 
-        public BomberMap(Form1 mainform)
+        private Boolean MapExists = false;
+
+        public BomberMap(frmMain mainform)
         {
             this.mainForm = mainform;
         }
 
+        /// <summary>
+        /// create or update Map
+        /// </summary>
+        /// <param name="MapString">MapSting from Server</param>
         public void createMap(string MapString)
         {
             Image mapimg = drawMap(MapString);
-            if (AllPictureBox.InvokeRequired)
+            if (MapExists)
             {
-                AllPictureBox.Invoke(new emptyFunction(delegate()
-                    {
-                        AllPictureBox.Location = new Point(10, 10);
-                        AllPictureBox.Name = "MapPictureBox";
-                        AllPictureBox.Size = new Size(MapXSize * BlockSize, MapYSize * BlockSize);
-                        AllPictureBox.Visible = true;
-                        AllPictureBox.BackgroundImage = mapimg;
-                    }));
+                //reload Map- image
+                AllPictureBox.Invoke(new emptyFunction(delegate() { AllPictureBox.BackgroundImage = mapimg; }));
             }
             else
             {
+                //create picturebox
                 AllPictureBox.Location = new Point(10, 10);
                 AllPictureBox.Name = "MapPictureBox";
                 AllPictureBox.Size = new Size(MapXSize * BlockSize, MapYSize * BlockSize);
                 AllPictureBox.Visible = true;
                 AllPictureBox.BackgroundImage = mapimg;
+                mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
+                drawPlayer();
+                MapExists = true;
             }
-            mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
-            
-            //setPlayerPosition(1,1,1);
         }
 
+        /// <summary>
+        /// create Bitmap out of Map strings 
+        /// </summary>
+        /// <param name="MapString">MapSting from Server</param>
+        /// <returns></returns>
         private Bitmap drawMap(string MapString)
         {
             String[] rows = MapString.Split(';');
@@ -74,9 +81,10 @@ namespace BomberCowClient
                 currow = dummy.Split(':');
                 for (int xCounter = 0; xCounter < MapXSize; xCounter++)
                 {
+                    //add textures
                     if (currow[xCounter] == "0")
                     {
-                        g.DrawImage(img1, new Point(xCounter*BlockSize, yCounter*BlockSize));
+                        g.DrawImage(img1, new Point(xCounter * BlockSize, yCounter * BlockSize));
                     }
                     if (currow[xCounter] == "1")
                     {
@@ -84,19 +92,21 @@ namespace BomberCowClient
                     }
                     if (currow[xCounter] == "2")
                     {
-                        g.DrawImage(img2, new Point(xCounter*BlockSize, yCounter*BlockSize));
+                        g.DrawImage(img2, new Point(xCounter * BlockSize, yCounter * BlockSize));
                     }
                 }
             }
             g.Dispose();
             img1.Dispose();
             img2.Dispose();
-            
-            map.Save("map.png", System.Drawing.Imaging.ImageFormat.Png);
+
+            //return complete image
             return map;
-            //map.Dispose();
         }
 
+        /// <summary>
+        ///creates imagebox for player
+        /// </summary>
         public void drawPlayer()
         {
             Player1PictureBox.Location = new Point(0, 0);
@@ -109,11 +119,24 @@ namespace BomberCowClient
             Player1PictureBox.Parent = AllPictureBox;
         }
 
+        /// <summary>
+        /// Set the position of a player
+        /// </summary>
+        /// <param name="Player">???</param>
+        /// <param name="xPosition">x Position</param>
+        /// <param name="yPosition">y Position</param>
         public void setPlayerPosition(int Player, int xPosition, int yPosition)
         {
             if (Player == 1)
             {
-                Player1PictureBox.Invoke(new emptyFunction(delegate() { Player1PictureBox.Location = new Point(xPosition * BlockSize, yPosition * BlockSize); }));
+                if (Player1PictureBox.InvokeRequired)
+                {
+                    Player1PictureBox.Invoke(new emptyFunction(delegate() { Player1PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize); }));
+                }
+                else
+                {
+                    Player1PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize);
+                }
             }
         }
     }
