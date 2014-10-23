@@ -32,7 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommunicationLibrary">
+    <Reference Include="CommunicationLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\CommunicationLibrary\bin\Release\CommunicationLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -90,9 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\2.png" />

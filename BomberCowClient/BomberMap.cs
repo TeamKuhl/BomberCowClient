@@ -17,7 +17,7 @@ namespace BomberCowClient
         private PictureBox AllPictureBox = new PictureBox();
         private PictureBox Player1PictureBox = new PictureBox();
 
-        //size ofe the textures
+        // Size ofe the textures
         public int BlockSize = 32;
         private int MapXSize;
         private int MapYSize;
@@ -30,7 +30,7 @@ namespace BomberCowClient
         }
 
         /// <summary>
-        /// create or update Map
+        ///     Create or update Map
         /// </summary>
         /// <param name="MapString">MapSting from Server</param>
         public void createMap(string MapString)
@@ -38,12 +38,12 @@ namespace BomberCowClient
             Image mapimg = drawMap(MapString);
             if (MapExists)
             {
-                //reload Map- image
+                // Reload Mapimage
                 AllPictureBox.Invoke(new emptyFunction(delegate() { AllPictureBox.BackgroundImage = mapimg; }));
             }
             else
             {
-                //create picturebox
+                // Create picturebox
                 AllPictureBox.Location = new Point(10, 10);
                 AllPictureBox.Name = "MapPictureBox";
                 AllPictureBox.Size = new Size(MapXSize * BlockSize, MapYSize * BlockSize);
@@ -56,7 +56,7 @@ namespace BomberCowClient
         }
 
         /// <summary>
-        /// create Bitmap out of Map strings 
+        ///     Create Bitmap out of Map strings 
         /// </summary>
         /// <param name="MapString">MapSting from Server</param>
         /// <returns></returns>
@@ -81,7 +81,7 @@ namespace BomberCowClient
                 currow = dummy.Split(':');
                 for (int xCounter = 0; xCounter < MapXSize; xCounter++)
                 {
-                    //add textures
+                    // Add textures
                     if (currow[xCounter] == "0")
                     {
                         g.DrawImage(img1, new Point(xCounter * BlockSize, yCounter * BlockSize));
@@ -100,12 +100,12 @@ namespace BomberCowClient
             img1.Dispose();
             img2.Dispose();
 
-            //return complete image
+            // Return complete image
             return map;
         }
 
         /// <summary>
-        ///creates imagebox for player
+        ///     Creates imagebox for player
         /// </summary>
         public void drawPlayer()
         {
@@ -120,7 +120,7 @@ namespace BomberCowClient
         }
 
         /// <summary>
-        /// Set the position of a player
+        ///     Set the position of a player
         /// </summary>
         /// <param name="Player">???</param>
         /// <param name="xPosition">x Position</param>

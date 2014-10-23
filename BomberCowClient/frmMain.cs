@@ -17,10 +17,13 @@ namespace BomberCowClient
         private BomberMap BomberMap;
 
         private Boolean connected = false;
-        //IP of the Server
+        // IP of the Server
         public string ServerIP;
-        //Client name to connect with
+        // Client name to connect with
         public string PlayerName;
+
+        // Player dictionary
+        private Dictionary<int, string> playerlist;
 
         public frmMain()
         {
@@ -30,41 +33,41 @@ namespace BomberCowClient
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //create formLogin
+            // Create formLogin
             frmLogin frmLogin = new frmLogin(this);
-            //show it
+            // Show it
             frmLogin.Show();
 
-            //for more performance
+            // For more performance
             this.DoubleBuffered = true;
         }
 
-        //connect to the Server
+        // Connect to the Server
         public void connect()
         {
-            //create Eventhandler
+            // Create Eventhandler
             client.onReceive += new ClientReceiveHandler(ReceiveEvent);
             try
             {
-                //connect with given IP
+                // Connect with given IP
                 connected = client.connect(ServerIP, 45454);
-                //set Client name = PlayerName
+                // Set Client name = PlayerName
                 client.send("PlayerInfo", PlayerName);
             }
             catch
             {
-                //can't connect
+                // Can't connect
                 MessageBox.Show("Es konnte keine Verbindung zum Server hergestellt werden", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
 
-        //handles the differetn input- types
+        // Handles the differetn input- types
         private void ReceiveEvent(String type, String message)
         {
             switch (type)
             {
-                //Player joint Server
+                // Player joint Server
                 case "Join":
                     string[] PlayerJoin = message.Split(':');
                     if (PlayerJoin[1] == PlayerName)
@@ -76,23 +79,34 @@ namespace BomberCowClient
                     {
                         lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(PlayerJoin[1] + " joined the Server"); }));
                     }
+                    client.send("PlayerandId", "");
                     break;
-                //Player left Server
+                // Player left Server
                 case "Leave":
-                    lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(message + " left the Server"); }));
+                    lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(playerlist[Convert.ToInt32(message)] + " left the Server"); }));
+                    client.send("PlayerandId", "");
                     break;
-                //got message from Player
+                // Got message from Player
                 case "ChatMessage":
                     lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(message); }));
                     break;
-                //got Map strings
+                // Got Map strings
                 case "Map":
                     BomberMap.createMap(message);
                     break;
-                //got player position
+                // Got player position
                 case "PlayerPosition":
                     string[] PlayerPosition = message.Split(':');
                     BomberMap.setPlayerPosition(1, Convert.ToInt32(PlayerPosition[1]), Convert.ToInt32(PlayerPosition[2]));
+                    break;
+                // Player list update
+                case "PlayerList":
+                    string[] PlayerList = message.Split(';');
+                    foreach(string Player in PlayerList)
+                    {
+                        string[] PlayerandId = Player.Split(':');
+                        playerlist.Add(Convert.ToInt32(PlayerandId[0]), PlayerandId[1]);
+                    }
                     break;
             }
             lstChat.Invoke(new emptyFunction(delegate() { lstChat.SelectedIndex = lstChat.Items.Count - 1; }));
@@ -100,18 +114,18 @@ namespace BomberCowClient
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //if connected disconnect to prevent errors
+            // If connected disconnect to prevent errors
             if (connected)
             {
                 client.disconnect();
             }
-            //close Eventhandler
+            // Close Eventhandler
             client.onReceive -= new ClientReceiveHandler(ReceiveEvent);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            //Send move commands to the Server
+            // Send move commands to the Server
             if (e.KeyCode == Keys.S)
             {
                 client.send("Move", "s");
