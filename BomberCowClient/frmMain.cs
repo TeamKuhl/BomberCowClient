@@ -66,12 +66,24 @@ namespace BomberCowClient
             {
                 //Player joint Server
                 case "Join":
-                    MessageBox.Show(message);
-                    client.send("GetMap", "");
+                    string[] PlayerJoin = message.Split(':');
+                    if (PlayerJoin[1] == PlayerName)
+                    {
+                        lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add("You joined the Server"); }));
+                        client.send("GetMap", "");
+                    }
+                    else
+                    {
+                        lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(PlayerJoin[1] + " joined the Server"); }));
+                    }
+                    break;
+                //Player left Server
+                case "Leave":
+                    lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(message + " left the Server"); }));
                     break;
                 //got message from Player
                 case "ChatMessage":
-                    MessageBox.Show(message);
+                    lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(message); }));
                     break;
                 //got Map strings
                 case "Map":
@@ -83,6 +95,7 @@ namespace BomberCowClient
                     BomberMap.setPlayerPosition(1, Convert.ToInt32(PlayerPosition[1]), Convert.ToInt32(PlayerPosition[2]));
                     break;
             }
+            lstChat.Invoke(new emptyFunction(delegate() { lstChat.SelectedIndex = lstChat.Items.Count - 1; }));
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -114,6 +127,24 @@ namespace BomberCowClient
             if (e.KeyCode == Keys.D)
             {
                 client.send("Move", "e");
+            }
+            if (e.KeyCode == Keys.Return)
+            {
+                txtChat.Enabled = true;
+                txtChat.Focus();
+            }
+        }
+
+        private void txtChat_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Return)
+            {
+                if (txtChat.Text != "")
+                {
+                    client.send("ChatMessage", txtChat.Text);
+                    txtChat.Text = "";
+                }
+                txtChat.Enabled = false;
             }
         }
     }
