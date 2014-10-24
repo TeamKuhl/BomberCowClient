@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.IO;
 
@@ -19,7 +20,7 @@ namespace BomberCowClient
         private PictureBox Player2PictureBox = new PictureBox();
 
         // Size ofe the textures
-        public int BlockSize = 42;
+        public int BlockSize = 32;
         private int MapXSize;
         private int MapYSize;
 
@@ -71,10 +72,16 @@ namespace BomberCowClient
 
             Bitmap map = new Bitmap(MapXSize * BlockSize, MapYSize * BlockSize);
             Graphics g = Graphics.FromImage(map);
+            Size imgSize = new Size(BlockSize, BlockSize);
             Image img1 = BomberCowClient.Properties.Resources.png1;
             Image img2 = BomberCowClient.Properties.Resources.png2;
             Image back = BomberCowClient.Properties.Resources.back;
             Image player = BomberCowClient.Properties.Resources.Player1;
+
+            img1 = ResizeImage(img1, imgSize);//, true);
+            img2 = ResizeImage(img2, imgSize);
+            back = ResizeImage(back, imgSize);
+            player = ResizeImage(player, imgSize);
 
             g.Clear(Color.Black);
             for (int yCounter = 0; yCounter < MapYSize; yCounter++)
@@ -105,6 +112,35 @@ namespace BomberCowClient
             map.Save("map.png", System.Drawing.Imaging.ImageFormat.Png);
             // Return complete image
             return map;
+        }
+
+
+        /// <summary>
+        ///     Resize images to fit the map
+        /// </summary>
+        /// <param name="image">original image</param>
+        /// <param name="size">size to scale to</param>
+        /// <returns>resized image</returns>
+        private static Image ResizeImage(Image image, Size size)
+        {
+            int newWidth;
+            int newHeight;
+
+            int originalWidth = image.Width;
+            int originalHeight = image.Height;
+            float percentWidth = (float)size.Width / (float)originalWidth;
+            float percentHeight = (float)size.Height / (float)originalHeight;
+            float percent = percentHeight < percentWidth ? percentHeight : percentWidth;
+            newWidth = (int)(originalWidth * percent);
+            newHeight = (int)(originalHeight * percent);
+
+            Image newImage = new Bitmap(newWidth, newHeight);
+            using (Graphics graphicsHandle = Graphics.FromImage(newImage))
+            {
+                graphicsHandle.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphicsHandle.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+            return newImage;
         }
 
         /// <summary>
