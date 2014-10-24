@@ -105,6 +105,7 @@ namespace BomberCowClient
                         }
                     }
 
+                    // Reload Map
                     if (sMapString != null)
                     {
                         BomberMap.createMap(sMapString);
@@ -122,6 +123,8 @@ namespace BomberCowClient
                             break;
                         }
                     }
+
+                    // Reload Map
                     if (sMapString != null)
                     {
                         BomberMap.createMap(sMapString);
@@ -142,6 +145,7 @@ namespace BomberCowClient
                         client.send("GetPlayerList", "");
                         getUpdates = true;
                     }
+
                     sMapString = message;
                     BomberMap.createMap(sMapString);
 
@@ -172,6 +176,8 @@ namespace BomberCowClient
                             oplayer.yPosition = Convert.ToInt32(PlayerPosition[2]);
                         }
                     }
+
+                    // Reload Map
                     if (sMapString != null)
                     {
                         BomberMap.createMap(sMapString);
@@ -197,29 +203,48 @@ namespace BomberCowClient
                 case "BombPlaced":
                     string[] BombPosition = message.Split(':');
                     items.Add(new Item() { type = "bomb", xPosition = Convert.ToInt32(BombPosition[0]), yPosition = Convert.ToInt32(BombPosition[1]) });
+
+                    // Reload Map
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
+                    }
                     break;
 
                 // Delete bomb
                 case "BombExploded":
                     string[] DeleteBombs = message.Split(';');
-                    
-                    foreach(string bomb in DeleteBombs)
-                    {
-                        string[] BombPos = bomb.Split(':');
 
-                        foreach(Item item in items)
+                    string[] BombPos = DeleteBombs[0].Split(':');
+
+                    foreach (Item item in items)
+                    {
+                        if (item.type == "bomb")
                         {
-                            if(item.type == "bomb")
+                            if (item.xPosition == Convert.ToInt32(BombPos[0]))
                             {
-                                if(item.xPosition == Convert.ToInt32(BombPos[0]))
+                                if (item.yPosition == Convert.ToInt32(BombPos[1]))
                                 {
-                                    if (item.yPosition == Convert.ToInt32(BombPos[1]))
-                                    {
-                                        items.Remove(item);
-                                    }
+                                    items.Remove(item);
+                                    break;
                                 }
                             }
                         }
+                    }
+
+                    foreach (string bomb in DeleteBombs)
+                    {
+                        if (bomb != "")
+                        {
+                            BombPos = bomb.Split(':');
+                            items.Add(new Item() { type = "explode", xPosition = Convert.ToInt32(BombPos[0]), yPosition = Convert.ToInt32(BombPos[1]) });
+                        }
+                    }
+
+                    // Reload Map
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
                     }
                     break;
             }

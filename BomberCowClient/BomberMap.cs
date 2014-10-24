@@ -78,12 +78,14 @@ namespace BomberCowClient
             Image back = BomberCowClient.Properties.Resources.back;
             Image player = BomberCowClient.Properties.Resources.player;
             Image bomb = BomberCowClient.Properties.Resources.bomb;
+            Image explode = BomberCowClient.Properties.Resources.explode;
 
             img1 = ResizeImage(img1, imgSize);//, true);
             img2 = ResizeImage(img2, imgSize);
             back = ResizeImage(back, imgSize);
             player = ResizeImage(player, imgSize);
             bomb = ResizeImage(bomb, imgSize);
+            explode = ResizeImage(explode, imgSize);
 
             // Clear
             g.Clear(Color.Black);
@@ -117,6 +119,10 @@ namespace BomberCowClient
                 if (oitem.type == "bomb")
                 {
                     g.DrawImage(bomb, new Point((oitem.xPosition - 1) * BlockSize, (oitem.yPosition - 1) * BlockSize));
+                }
+                if (oitem.type == "explode")
+                {
+                    g.DrawImage(explode, new Point((oitem.xPosition - 1) * BlockSize, (oitem.yPosition - 1) * BlockSize));
                 }
             }
 
