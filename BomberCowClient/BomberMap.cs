@@ -73,17 +73,22 @@ namespace BomberCowClient
             Bitmap map = new Bitmap(MapXSize * BlockSize, MapYSize * BlockSize);
             Graphics g = Graphics.FromImage(map);
             Size imgSize = new Size(BlockSize, BlockSize);
-            Image img1 = BomberCowClient.Properties.Resources.png1;
-            Image img2 = BomberCowClient.Properties.Resources.png2;
+            Image img1 = BomberCowClient.Properties.Resources.wall;
+            Image img2 = BomberCowClient.Properties.Resources.breakable;
             Image back = BomberCowClient.Properties.Resources.back;
-            Image player = BomberCowClient.Properties.Resources.Player1;
+            Image player = BomberCowClient.Properties.Resources.player;
+            Image bomb = BomberCowClient.Properties.Resources.bomb;
 
             img1 = ResizeImage(img1, imgSize);//, true);
             img2 = ResizeImage(img2, imgSize);
             back = ResizeImage(back, imgSize);
             player = ResizeImage(player, imgSize);
+            bomb = ResizeImage(bomb, imgSize);
 
+            // Clear
             g.Clear(Color.Black);
+
+            // Draw map
             for (int yCounter = 0; yCounter < MapYSize; yCounter++)
             {
                 dummy = rows[yCounter];
@@ -105,6 +110,23 @@ namespace BomberCowClient
                     }
                 }
             }
+
+            // Draw items
+            foreach (Item oitem in mainForm.items)
+            {
+                if (oitem.type == "bomb")
+                {
+                    g.DrawImage(bomb, new Point((oitem.xPosition - 1) * BlockSize, (oitem.yPosition - 1) * BlockSize));
+                }
+            }
+
+            // Draw players
+            foreach (Player oplayer in mainForm.players)
+            {
+                g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, (oplayer.yPosition - 1) * BlockSize));
+            }
+
+            // Draw names
             foreach (Player oplayer in mainForm.players)
             {
                 int txtxSize = oplayer.Name.Length * 2;

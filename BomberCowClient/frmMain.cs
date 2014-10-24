@@ -17,28 +17,28 @@ namespace BomberCowClient
         private Client client = new Client();
         private BomberMap BomberMap;
 
-        // Create a list of parts.
+        // Create a list of players
         public List<Player> players = new List<Player>();
+
+        // Create a list od items
+        public List<Item> items = new List<Item>();
 
         // Updates PalyerList and Map
         private Boolean getUpdates = false;
 
+        // If false don't disconnect
         private Boolean connected = false;
+
         // IP of the Server
         public string ServerIP;
+
         // Client name to connect with
         public string PlayerName;
 
         // Mapstring
         private string sMapString;
 
-        //Client ID
-        //private int ClientID;
-
-        // Player dictionary
-        //private Dictionary<int, string> playerlist = new Dictionary<int, string>();
-
-        //set size of form
+        // Set size of form
         private Boolean fitForm = false;
 
         public frmMain()
@@ -103,6 +103,11 @@ namespace BomberCowClient
                                 lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oplayer.Name + " joined the Server"); }));
                             }
                         }
+                    }
+
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -187,6 +192,12 @@ namespace BomberCowClient
                         }
                     }
                     break;
+
+               // Got Bomb
+                case "BombPlaced":
+                    string[] BombPosition = message.Split(':');
+                    items.Add(new Item() {type = "bomb", xPosition = Convert.ToInt32(BombPosition[0]), yPosition = Convert.ToInt32(BombPosition[1]) });
+                    break;
             }
             lstChat.Invoke(new emptyFunction(delegate() { lstChat.SelectedIndex = lstChat.Items.Count - 1; }));
         }
@@ -205,21 +216,25 @@ namespace BomberCowClient
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             // Send move commands to the Server
-            if (e.KeyCode == Keys.S)
+            if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
             {
                 client.send("Move", "s");
             }
-            if (e.KeyCode == Keys.W)
+            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
             {
                 client.send("Move", "n");
             }
-            if (e.KeyCode == Keys.A)
+            if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
             {
                 client.send("Move", "w");
             }
-            if (e.KeyCode == Keys.D)
+            if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
             {
                 client.send("Move", "e");
+            }
+            if (e.KeyCode == Keys.Space)
+            {
+                client.send("BombPlace", "");
             }
             if (e.KeyCode == Keys.Return)
             {
