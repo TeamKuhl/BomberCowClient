@@ -61,6 +61,7 @@ namespace BomberCowClient
         // Connect to the Server
         public void connect()
         {
+            tmrUpdate.Enabled = true;
             // Create Eventhandler
             client.onReceive += new ClientReceiveHandler(ReceiveEvent);
             try
@@ -304,5 +305,34 @@ namespace BomberCowClient
                 txtChat.Enabled = false;
             }
         }
+
+        private void tmrUpdate_Tick(object sender, EventArgs e)
+        {
+            foreach(Item oitem in items)
+            {
+                if (oitem.type == "explode")
+                {
+                    oitem.livetime = oitem.livetime + 1;
+                }
+            }
+
+            foreach(Item oitem in items)
+            {
+                if (oitem.type == "explode")
+                {
+                    if(oitem.livetime >= 5)
+                    {
+                        items.Remove(oitem);
+                        break;
+                    }
+                }
+            }
+            // Reload Map
+            if (sMapString != null)
+            {
+                BomberMap.createMap(sMapString);
+            }
+        }
+
     }
 }

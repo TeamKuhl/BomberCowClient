@@ -11,5 +11,6 @@ namespace BomberCowClient
         public string type;
         public int xPosition;
         public int yPosition;
+        public int livetime;
     }
 }
