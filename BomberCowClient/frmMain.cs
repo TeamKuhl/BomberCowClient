@@ -193,10 +193,34 @@ namespace BomberCowClient
                     }
                     break;
 
-               // Got Bomb
+                // Got bomb
                 case "BombPlaced":
                     string[] BombPosition = message.Split(':');
-                    items.Add(new Item() {type = "bomb", xPosition = Convert.ToInt32(BombPosition[0]), yPosition = Convert.ToInt32(BombPosition[1]) });
+                    items.Add(new Item() { type = "bomb", xPosition = Convert.ToInt32(BombPosition[0]), yPosition = Convert.ToInt32(BombPosition[1]) });
+                    break;
+
+                // Delete bomb
+                case "BombExploded":
+                    string[] DeleteBombs = message.Split(';');
+                    
+                    foreach(string bomb in DeleteBombs)
+                    {
+                        string[] BombPos = bomb.Split(':');
+
+                        foreach(Item item in items)
+                        {
+                            if(item.type == "bomb")
+                            {
+                                if(item.xPosition == Convert.ToInt32(BombPos[0]))
+                                {
+                                    if (item.yPosition == Convert.ToInt32(BombPos[1]))
+                                    {
+                                        items.Remove(item);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     break;
             }
             lstChat.Invoke(new emptyFunction(delegate() { lstChat.SelectedIndex = lstChat.Items.Count - 1; }));
