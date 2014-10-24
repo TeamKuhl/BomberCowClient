@@ -107,7 +107,11 @@ namespace BomberCowClient
             }
             foreach (Player oplayer in mainForm.players)
             {
+                int txtxSize = oplayer.Name.Length * 2;
+                int halftxtxSize = Convert.ToInt32(Math.Round(Convert.ToDecimal(txtxSize) / 2));
+                RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - halftxtxSize, ((oplayer.yPosition - 1) * BlockSize) - 13, ((oplayer.xPosition - 1) * BlockSize) + txtxSize, ((oplayer.yPosition - 1) * BlockSize) + 10);
                 g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, (oplayer.yPosition - 1) * BlockSize));
+                g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf);
             }
 
             g.Dispose();

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CommunicationLibrary;
@@ -116,7 +117,10 @@ namespace BomberCowClient
                             break;
                         }
                     }
-                    //client.send("GetPlayerList", "");
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
+                    }
                     break;
 
                 // Got message from Player
@@ -178,7 +182,8 @@ namespace BomberCowClient
                         if (Player != "")
                         {
                             string[] PlayerandId = Player.Split(':');
-                            players.Add(new Player() { ID = Convert.ToString(PlayerandId[0]), Name = PlayerandId[1] });
+                            players.Add(new Player() { ID = PlayerandId[0], Name = PlayerandId[1] });
+                            client.send("GetPlayerPosition", PlayerandId[0]);
                         }
                     }
                     break;

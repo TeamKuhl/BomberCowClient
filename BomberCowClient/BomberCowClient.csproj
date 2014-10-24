@@ -34,7 +34,7 @@
   <ItemGroup>
     <Reference Include="CommunicationLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CommunicationLibrary\bin\Release\CommunicationLibrary.dll</HintPath>
+      <HintPath>..\..\CommunicationLibrary\bin\Debug\CommunicationLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
