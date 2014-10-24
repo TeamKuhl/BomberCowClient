@@ -52,7 +52,7 @@ namespace BomberCowClient
                 AllPictureBox.Visible = true;
                 AllPictureBox.BackgroundImage = mapimg;
                 mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
-                drawPlayer();
+                //drawPlayer();
                 MapExists = true;
             }
         }
@@ -105,11 +105,17 @@ namespace BomberCowClient
                     }
                 }
             }
-            g.DrawImage(player, new Point(1 * BlockSize, 2 * BlockSize));
+            foreach (Player oplayer in mainForm.players)
+            {
+                g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, (oplayer.yPosition - 1) * BlockSize));
+            }
+
             g.Dispose();
             img1.Dispose();
             img2.Dispose();
-            map.Save("map.png", System.Drawing.Imaging.ImageFormat.Png);
+
+            //map.Save("map.png", System.Drawing.Imaging.ImageFormat.Png);
+
             // Return complete image
             return map;
         }
@@ -141,62 +147,6 @@ namespace BomberCowClient
                 graphicsHandle.DrawImage(image, 0, 0, newWidth, newHeight);
             }
             return newImage;
-        }
-
-        /// <summary>
-        ///     Creates imagebox for player
-        /// </summary>
-        public void drawPlayer()
-        {
-            Player1PictureBox.Location = new Point(0, 0);
-            Player1PictureBox.Name = "Player1PictureBox";
-            Player1PictureBox.Size = new Size(BlockSize, BlockSize);
-            Player1PictureBox.Visible = true;
-            Player1PictureBox.BackColor = Color.Transparent;
-            Player1PictureBox.BackgroundImage = BomberCowClient.Properties.Resources.Player1;
-            AllPictureBox.Invoke(new emptyFunction(delegate() { AllPictureBox.Controls.Add(Player1PictureBox); }));
-            Player1PictureBox.Parent = AllPictureBox;
-
-            Player2PictureBox.Location = new Point(0, 0);
-            Player2PictureBox.Name = "Player2PictureBox";
-            Player2PictureBox.Size = new Size(BlockSize, BlockSize);
-            Player2PictureBox.Visible = true;
-            Player2PictureBox.BackColor = Color.Transparent;
-            Player2PictureBox.BackgroundImage = BomberCowClient.Properties.Resources.Player1;
-            AllPictureBox.Invoke(new emptyFunction(delegate() { AllPictureBox.Controls.Add(Player2PictureBox); }));
-            Player2PictureBox.Parent = AllPictureBox;
-        }
-
-        /// <summary>
-        ///     Set the position of a player
-        /// </summary>
-        /// <param name="Player">???</param>
-        /// <param name="xPosition">x Position</param>
-        /// <param name="yPosition">y Position</param>
-        public void setPlayerPosition(int Player, int xPosition, int yPosition)
-        {
-            if (Player == 1)
-            {
-                if (Player1PictureBox.InvokeRequired)
-                {
-                    Player1PictureBox.Invoke(new emptyFunction(delegate() { Player1PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize); }));
-                }
-                else
-                {
-                    Player1PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize);
-                }
-            }
-            if (Player == 2)
-            {
-                if (Player2PictureBox.InvokeRequired)
-                {
-                    Player2PictureBox.Invoke(new emptyFunction(delegate() { Player2PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize); }));
-                }
-                else
-                {
-                    Player2PictureBox.Location = new Point((xPosition - 1) * BlockSize, (yPosition - 1) * BlockSize);
-                }
-            }
         }
     }
 }

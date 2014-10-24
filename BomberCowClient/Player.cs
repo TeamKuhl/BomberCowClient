@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BomberCowClient
 {
-    class Player
+    public class Player
     {
-        public int ID;
+        public string ID;
         public string Name;
         public int xPosition;
         public int yPosition;
