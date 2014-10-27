@@ -55,7 +55,6 @@
             // 
             // txtIp
             // 
-            this.txtIp.Enabled = false;
             this.txtIp.Location = new System.Drawing.Point(64, 19);
             this.txtIp.Name = "txtIp";
             this.txtIp.Size = new System.Drawing.Size(100, 20);
