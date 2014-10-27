@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BomberMap.cs" />
+    <Compile Include="BombHandler.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>

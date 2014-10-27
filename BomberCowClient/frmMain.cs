@@ -61,7 +61,7 @@ namespace BomberCowClient
         // Connect to the Server
         public void connect()
         {
-            tmrUpdate.Enabled = true;
+            tmrUpdate.Enabled = false;
             // Create Eventhandler
             client.onReceive += new ClientReceiveHandler(ReceiveEvent);
             try
@@ -238,7 +238,11 @@ namespace BomberCowClient
                         if (bomb != "")
                         {
                             BombPos = bomb.Split(':');
-                            items.Add(new Item() { type = "explode", xPosition = Convert.ToInt32(BombPos[0]), yPosition = Convert.ToInt32(BombPos[1]) });
+                            Item explosion = new Item() { type = "explode", xPosition = Convert.ToInt32(BombPos[0]), yPosition = Convert.ToInt32(BombPos[1]) };
+                            items.Add(explosion);
+                            ParameterizedThreadStart pts = new ParameterizedThreadStart(this.explosionHandler);
+                            Thread thread = new Thread(pts);
+                            thread.Start(explosion);
                         }
                     }
 
@@ -250,6 +254,18 @@ namespace BomberCowClient
                     break;
             }
             lstChat.Invoke(new emptyFunction(delegate() { lstChat.SelectedIndex = lstChat.Items.Count - 1; }));
+        }
+
+        private void explosionHandler(Object item)
+        {
+            Thread.Sleep(500);
+            items.Remove((Item)item);
+
+            // Reload Map
+            if (sMapString != null)
+            {
+                BomberMap.createMap(sMapString);
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
