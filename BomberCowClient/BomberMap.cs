@@ -24,6 +24,9 @@ namespace BomberCowClient
         private int MapXSize;
         private int MapYSize;
 
+        //not used right now
+        private int HUDYSize = 0;
+
         private Boolean MapExists = false;
 
         public BomberMap(frmMain mainform)
@@ -48,7 +51,7 @@ namespace BomberCowClient
                 // Create picturebox
                 AllPictureBox.Location = new Point(10, 10);
                 AllPictureBox.Name = "MapPictureBox";
-                AllPictureBox.Size = new Size(MapXSize * BlockSize, MapYSize * BlockSize);
+                AllPictureBox.Size = new Size(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize);
                 AllPictureBox.Visible = true;
                 AllPictureBox.BackgroundImage = mapimg;
                 mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
@@ -70,13 +73,14 @@ namespace BomberCowClient
             String[] currow = dummy.Split(':');
             MapXSize = currow.Length;
 
-            Bitmap map = new Bitmap(MapXSize * BlockSize, MapYSize * BlockSize);
+            Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize);
             Graphics g = Graphics.FromImage(map);
             Size imgSize = new Size(BlockSize, BlockSize);
             Image img1 = BomberCowClient.Properties.Resources.wall;
             Image img2 = BomberCowClient.Properties.Resources.breakable;
             Image back = BomberCowClient.Properties.Resources.back;
             Image player = BomberCowClient.Properties.Resources.player;
+            Image playerDead = BomberCowClient.Properties.Resources.playerDead;
             Image bomb = BomberCowClient.Properties.Resources.bomb;
             Image explode = BomberCowClient.Properties.Resources.explode;
 
@@ -84,6 +88,7 @@ namespace BomberCowClient
             img2 = ResizeImage(img2, imgSize);
             back = ResizeImage(back, imgSize);
             player = ResizeImage(player, imgSize);
+            playerDead = ResizeImage(playerDead, imgSize);
             bomb = ResizeImage(bomb, imgSize);
             explode = ResizeImage(explode, imgSize);
 
@@ -100,15 +105,15 @@ namespace BomberCowClient
                     // Add textures
                     if (currow[xCounter] == "0")
                     {
-                        g.DrawImage(img1, new Point(xCounter * BlockSize, yCounter * BlockSize));
+                        g.DrawImage(img1, new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
                     }
                     if (currow[xCounter] == "1")
                     {
-                        g.DrawImage(back, new Point(xCounter * BlockSize, yCounter * BlockSize));
+                        g.DrawImage(back, new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
                     }
                     if (currow[xCounter] == "2")
                     {
-                        g.DrawImage(img2, new Point(xCounter * BlockSize, yCounter * BlockSize));
+                        g.DrawImage(img2, new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
                     }
                 }
             }
@@ -118,27 +123,34 @@ namespace BomberCowClient
             {
                 if (oitem.type == "bomb")
                 {
-                    g.DrawImage(bomb, new Point((oitem.xPosition - 1) * BlockSize, (oitem.yPosition - 1) * BlockSize));
+                    g.DrawImage(bomb, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
                 }
                 if (oitem.type == "explode")
                 {
-                    g.DrawImage(explode, new Point((oitem.xPosition - 1) * BlockSize, (oitem.yPosition - 1) * BlockSize));
+                    g.DrawImage(explode, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
                 }
             }
 
-            // Draw players
-            foreach (Player oplayer in mainForm.players)
-            {
-                g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, (oplayer.yPosition - 1) * BlockSize));
-            }
-
-            // Draw names
+            // Draw names & player
             foreach (Player oplayer in mainForm.players)
             {
                 int txtxSize = oplayer.Name.Length * 2;
                 int halftxtxSize = Convert.ToInt32(Math.Round(Convert.ToDecimal(txtxSize) / 2));
-                RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - halftxtxSize, ((oplayer.yPosition - 1) * BlockSize) - 13, ((oplayer.xPosition - 1) * BlockSize) + txtxSize, ((oplayer.yPosition - 1) * BlockSize) + 10);
-                g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, (oplayer.yPosition - 1) * BlockSize));
+                RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - halftxtxSize, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, ((oplayer.xPosition - 1) * BlockSize) + txtxSize, (((oplayer.yPosition - 1) * BlockSize) + 10) + HUDYSize);
+
+                // Draw living player
+                if (oplayer.State == 1)
+                {
+                    g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                }
+
+                // Draw dead player
+                if (oplayer.State == 2)
+                {
+                    g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                }
+
+                // Draw name
                 g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf);
             }
 

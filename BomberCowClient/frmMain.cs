@@ -89,7 +89,7 @@ namespace BomberCowClient
                 case "Join":
                     string[] PlayerJoin = message.Split(':');
 
-                    players.Add(new Player() { ID = PlayerJoin[0], Name = PlayerJoin[1] });
+                    players.Add(new Player() { ID = PlayerJoin[0], Name = PlayerJoin[1], State = 1 });
                     if (!getUpdates)
                     {
                         lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add("You joined the Server"); }));
@@ -211,6 +211,23 @@ namespace BomberCowClient
                         BomberMap.createMap(sMapString);
                     }
                     break;
+                
+                // Player died
+                case "PlayerDied":
+                    foreach (Player oPlayer in players)
+                    {
+                        if (oPlayer.ID == message)
+                        {
+                            oPlayer.State = 2;
+
+                            // Reload Map
+                            if (sMapString != null)
+                            {
+                                BomberMap.createMap(sMapString);
+                            }
+                        }
+                    }
+                    break;
 
                 // Delete bomb
                 case "BombExploded":
@@ -233,6 +250,8 @@ namespace BomberCowClient
                         }
                     }
 
+                    List<Item> explosions = new List<Item>();
+
                     foreach (string bomb in DeleteBombs)
                     {
                         if (bomb != "")
@@ -240,9 +259,7 @@ namespace BomberCowClient
                             BombPos = bomb.Split(':');
                             Item explosion = new Item() { type = "explode", xPosition = Convert.ToInt32(BombPos[0]), yPosition = Convert.ToInt32(BombPos[1]) };
                             items.Add(explosion);
-                            ParameterizedThreadStart pts = new ParameterizedThreadStart(this.explosionHandler);
-                            Thread thread = new Thread(pts);
-                            thread.Start(explosion);
+                            explosions.Add(explosion);
                         }
                     }
 
@@ -251,15 +268,24 @@ namespace BomberCowClient
                     {
                         BomberMap.createMap(sMapString);
                     }
+
+                    ParameterizedThreadStart pts = new ParameterizedThreadStart(this.explosionHandler);
+                    Thread thread = new Thread(pts);
+                    thread.Start(explosions);
+
                     break;
             }
             lstChat.Invoke(new emptyFunction(delegate() { lstChat.SelectedIndex = lstChat.Items.Count - 1; }));
         }
 
-        private void explosionHandler(Object item)
+        private void explosionHandler(Object explosions)
         {
             Thread.Sleep(500);
-            items.Remove((Item)item);
+
+            foreach (Item item in (List<Item>)explosions)
+            {
+                items.Remove(item);
+            }
 
             // Reload Map
             if (sMapString != null)

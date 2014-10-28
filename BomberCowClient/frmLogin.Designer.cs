@@ -59,7 +59,7 @@
             this.txtIp.Name = "txtIp";
             this.txtIp.Size = new System.Drawing.Size(100, 20);
             this.txtIp.TabIndex = 2;
-            this.txtIp.Text = "172.25.66.17";
+            this.txtIp.Text = "10.1.92.28";
             // 
             // lblIp
             // 

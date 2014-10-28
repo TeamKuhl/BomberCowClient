@@ -12,5 +12,6 @@ namespace BomberCowClient
         public string Name;
         public int xPosition;
         public int yPosition;
+        public int State; //1 = alive 2 = dead
     }
 }
