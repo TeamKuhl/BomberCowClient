@@ -13,5 +13,6 @@ namespace BomberCowClient
         public int xPosition;
         public int yPosition;
         public int State; //1 = alive 2 = dead
+        public int PlayerState;
     }
 }

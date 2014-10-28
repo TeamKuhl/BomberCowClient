@@ -138,20 +138,23 @@ namespace BomberCowClient
                 int halftxtxSize = Convert.ToInt32(Math.Round(Convert.ToDecimal(txtxSize) / 2));
                 RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - halftxtxSize, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, ((oplayer.xPosition - 1) * BlockSize) + txtxSize, (((oplayer.yPosition - 1) * BlockSize) + 10) + HUDYSize);
 
-                // Draw living player
-                if (oplayer.State == 1)
+                if (oplayer.PlayerState == 1)
                 {
-                    g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
-                }
+                    // Draw living player
+                    if (oplayer.State == 1)
+                    {
+                        g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                    }
 
-                // Draw dead player
-                if (oplayer.State == 2)
-                {
-                    g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
-                }
+                    // Draw dead player
+                    if (oplayer.State == 2)
+                    {
+                        g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                    }
 
-                // Draw name
-                g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf);
+                    // Draw name
+                    g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf);
+                }
             }
 
             g.Dispose();

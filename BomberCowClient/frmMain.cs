@@ -166,6 +166,18 @@ namespace BomberCowClient
                     }
                     break;
 
+                // Got player state
+                case "PlayerStatus":
+                    string[] status = message.Split(':');
+                    foreach (Player oPlayer in players)
+                    {
+                        if (oPlayer.ID == status[0])
+                        {
+                            oPlayer.PlayerState = Convert.ToInt32(status[1]);
+                        }
+                    }
+                    break;
+
                 // Got player position
                 case "PlayerPosition":
                     string[] PlayerPosition = message.Split(':');
