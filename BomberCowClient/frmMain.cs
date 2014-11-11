@@ -103,6 +103,7 @@ namespace BomberCowClient
                     {
                         lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add("You joined the Server"); }));
                         client.send("GetMap", "");
+                        client.send("GetPlayerList", "");
                     }
                     else
                     {
@@ -185,6 +186,12 @@ namespace BomberCowClient
                             oPlayer.PlayerState = Convert.ToInt32(status[1]);
                         }
                     }
+
+                    // Reload Map
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
+                    }
                     break;
 
                 // Got player position
@@ -209,6 +216,7 @@ namespace BomberCowClient
                 // Player list update
                 case "PlayerList":
                     string[] PlayerList = message.Split(';');
+
                     //players
                     foreach (string Player in PlayerList)
                     {
@@ -217,6 +225,7 @@ namespace BomberCowClient
                             string[] PlayerandId = Player.Split(':');
                             players.Add(new Player() { ID = PlayerandId[0], Name = PlayerandId[1] });
                             client.send("GetPlayerPosition", PlayerandId[0]);
+                            client.send("GetPlayerStatus", PlayerandId[0]);
                         }
                     }
                     break;
@@ -232,7 +241,7 @@ namespace BomberCowClient
                         BomberMap.createMap(sMapString);
                     }
                     break;
-                
+
                 // Player died
                 case "PlayerDied":
                     foreach (Player oPlayer in players)
@@ -332,7 +341,7 @@ namespace BomberCowClient
             {
                 if (oplayer.ID == myid)
                 {
-                    if (oplayer.State == 1)
+                    if (oplayer.PlayerState == 1)
                     {
                         // Send move commands to the Server
                         if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
@@ -382,7 +391,7 @@ namespace BomberCowClient
 
         private void tmrUpdate_Tick(object sender, EventArgs e)
         {
-            foreach(Item oitem in items)
+            foreach (Item oitem in items)
             {
                 if (oitem.type == "explode")
                 {
@@ -390,11 +399,11 @@ namespace BomberCowClient
                 }
             }
 
-            foreach(Item oitem in items)
+            foreach (Item oitem in items)
             {
                 if (oitem.type == "explode")
                 {
-                    if(oitem.livetime >= 5)
+                    if (oitem.livetime >= 5)
                     {
                         items.Remove(oitem);
                         break;

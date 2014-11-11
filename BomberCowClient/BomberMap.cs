@@ -118,43 +118,57 @@ namespace BomberCowClient
                 }
             }
 
-            // Draw items
-            foreach (Item oitem in mainForm.items)
+            try
             {
-                if (oitem.type == "bomb")
+                // Draw items
+                foreach (Item oitem in mainForm.items)
                 {
-                    g.DrawImage(bomb, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
-                }
-                if (oitem.type == "explode")
-                {
-                    g.DrawImage(explode, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
+                    if (oitem.type == "bomb")
+                    {
+                        g.DrawImage(bomb, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
+                    }
+                    if (oitem.type == "explode")
+                    {
+                        g.DrawImage(explode, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
+                    }
                 }
             }
-
-            // Draw names & player
-            foreach (Player oplayer in mainForm.players)
+            catch
             {
-                int txtxSize = oplayer.Name.Length * 2;
-                int halftxtxSize = Convert.ToInt32(Math.Round(Convert.ToDecimal(txtxSize) / 2));
-                RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - halftxtxSize, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, ((oplayer.xPosition - 1) * BlockSize) + txtxSize, (((oplayer.yPosition - 1) * BlockSize) + 10) + HUDYSize);
+                // unbehandelter Fehler
+            }
 
-                if (oplayer.PlayerState == 1)
+            try
+            {
+                // Draw names & player
+                foreach (Player oplayer in mainForm.players)
                 {
-                    // Draw living player
-                    if (oplayer.State == 1)
-                    {
-                        g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
-                    }
+                    int txtxSize = oplayer.Name.Length * 2;
+                    int halftxtxSize = Convert.ToInt32(Math.Round(Convert.ToDecimal(txtxSize) / 2));
+                    RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - halftxtxSize, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, ((oplayer.xPosition - 1) * BlockSize) + txtxSize, (((oplayer.yPosition - 1) * BlockSize) + 10) + HUDYSize);
 
-                    // Draw dead player
-                    if (oplayer.State == 2)
+                    if (oplayer.PlayerState == 1)
                     {
-                        g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
-                    }
+                        // Draw living player
+                        if (oplayer.PlayerState == 1)
+                        {
+                            g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                        }
 
-                    // Draw name
-                    g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf);
+                        // Draw dead player
+                        if (oplayer.PlayerState == 2)
+                        {
+                            g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                        }
+
+                        // Draw name
+                        g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf);
+                    }
                 }
+            }
+            catch
+            {
+                // unbehandelter Fehler
             }
 
             g.Dispose();
