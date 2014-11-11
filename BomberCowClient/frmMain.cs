@@ -41,6 +41,9 @@ namespace BomberCowClient
         // Set size of form
         private Boolean fitForm = false;
 
+        // ID des clients
+        private string myid;
+
         public frmMain()
         {
             InitializeComponent();
@@ -68,9 +71,6 @@ namespace BomberCowClient
             {
                 // Connect with given IP
                 connected = client.connect(ServerIP, 45454);
-
-                // Set Client name = PlayerName
-                client.send("PlayerInfo", PlayerName);
             }
             catch
             {
@@ -85,6 +85,15 @@ namespace BomberCowClient
         {
             switch (type)
             {
+                // Initialize
+                case "YourId":
+                    // Set my ID
+                    myid = message;
+
+                    // Set Client name = PlayerName
+                    client.send("PlayerInfo", PlayerName);
+                    break;
+
                 // Player joined Server
                 case "Join":
                     string[] PlayerJoin = message.Split(':');
@@ -319,27 +328,38 @@ namespace BomberCowClient
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            // Send move commands to the Server
-            if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+            foreach (Player oplayer in players)
             {
-                client.send("Move", "s");
+                if (oplayer.ID == myid)
+                {
+                    if (oplayer.State == 1)
+                    {
+                        // Send move commands to the Server
+                        if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+                        {
+                            client.send("Move", "s");
+                        }
+                        if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
+                        {
+                            client.send("Move", "n");
+                        }
+                        if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
+                        {
+                            client.send("Move", "w");
+                        }
+                        if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
+                        {
+                            client.send("Move", "e");
+                        }
+                        if (e.KeyCode == Keys.Space)
+                        {
+                            client.send("BombPlace", "");
+                        }
+                    }
+                }
             }
-            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
-            {
-                client.send("Move", "n");
-            }
-            if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
-            {
-                client.send("Move", "w");
-            }
-            if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
-            {
-                client.send("Move", "e");
-            }
-            if (e.KeyCode == Keys.Space)
-            {
-                client.send("BombPlace", "");
-            }
+
+            // Send chat to Server
             if (e.KeyCode == Keys.Return)
             {
                 txtChat.Enabled = true;
