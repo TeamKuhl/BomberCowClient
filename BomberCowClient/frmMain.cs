@@ -71,6 +71,12 @@ namespace BomberCowClient
             {
                 // Connect with given IP
                 connected = client.connect(ServerIP, 45454);
+                if (!connected)
+                {
+                    // Can't connect
+                    MessageBox.Show("Es konnte keine Verbindung zum Server hergestellt werden", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
             }
             catch
             {
