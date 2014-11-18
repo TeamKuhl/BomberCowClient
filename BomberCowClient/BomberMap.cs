@@ -24,6 +24,15 @@ namespace BomberCowClient
         private int MapXSize;
         private int MapYSize;
 
+        // Player won
+        private Boolean bplayerwon = false;
+        private string swinnerid;
+        public void playerwon(string id, Boolean bstate)
+        {
+            bplayerwon = bstate;
+            swinnerid = id;
+        }
+
         //not used right now
         private int HUDYSize = 0;
 
@@ -172,12 +181,18 @@ namespace BomberCowClient
             }
 
             // Draw message
-            if (!true)
+            if (bplayerwon == true)
             {
-                int stautusxtext = 8;
-                int stautusytext = 6;
-                RectangleF rects = new RectangleF(BlockSize * stautusxtext, BlockSize * stautusytext, BlockSize * (stautusxtext + 1), BlockSize * (stautusytext + 1));
-                g.DrawString("YOU WON", new Font("Tahoma", 80), Brushes.Green, rects);
+                foreach (Player oplayer in mainForm.players)
+                {
+                    if (oplayer.ID == swinnerid)
+                    {
+                        int stautusxtext = 8;
+                        int stautusytext = 6;
+                        RectangleF rects = new RectangleF(BlockSize * stautusxtext, BlockSize * stautusytext, BlockSize * (stautusxtext + 15), BlockSize * (stautusytext + 15));
+                        g.DrawString(oplayer.Name + " WON", new Font("Tahoma", 60), Brushes.Green, rects);
+                    }
+                }
             }
             g.Dispose();
             img1.Dispose();

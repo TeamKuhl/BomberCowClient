@@ -247,6 +247,13 @@ namespace BomberCowClient
                         BomberMap.createMap(sMapString);
                     }
                     break;
+                
+                case "RoundStatus":
+                    if(message == "1")
+                    {
+                        BomberMap.playerwon(" ", false);
+                    }
+                    break;
 
                 // Player died
                 case "PlayerDied":
@@ -267,12 +274,12 @@ namespace BomberCowClient
                 
                 // A player has won
                 case "PlayerWin":
-                    foreach (Player oplayer in players)
+                    BomberMap.playerwon(message, true);
+                    foreach (Player oPlayer in players)
                     {
-                        if (oplayer.ID == message)
+                        if (oPlayer.ID == message)
                         {
-                            lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oplayer.Name + " won the game"); }));
-                            break;
+                            lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oPlayer.Name + " won"); }));
                         }
                     }
                     break;
