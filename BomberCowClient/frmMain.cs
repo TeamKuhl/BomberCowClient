@@ -279,7 +279,7 @@ namespace BomberCowClient
                     {
                         if (oPlayer.ID == message)
                         {
-                            lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oPlayer.Name + " won"); }));
+                            lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oPlayer.Name + " won the game"); }));
                         }
                     }
                     break;
