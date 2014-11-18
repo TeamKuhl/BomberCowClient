@@ -171,6 +171,14 @@ namespace BomberCowClient
                 // unbehandelter Fehler
             }
 
+            // Draw message
+            if (!true)
+            {
+                int stautusxtext = 8;
+                int stautusytext = 6;
+                RectangleF rects = new RectangleF(BlockSize * stautusxtext, BlockSize * stautusytext, BlockSize * (stautusxtext + 1), BlockSize * (stautusytext + 1));
+                g.DrawString("YOU WON", new Font("Tahoma", 80), Brushes.Green, rects);
+            }
             g.Dispose();
             img1.Dispose();
             img2.Dispose();

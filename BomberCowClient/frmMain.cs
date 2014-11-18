@@ -264,6 +264,18 @@ namespace BomberCowClient
                         }
                     }
                     break;
+                
+                // A player has won
+                case "PlayerWin":
+                    foreach (Player oplayer in players)
+                    {
+                        if (oplayer.ID == message)
+                        {
+                            lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oplayer.Name + " won the game"); }));
+                            break;
+                        }
+                    }
+                    break;
 
                 // Delete bomb
                 case "BombExploded":
