@@ -35,7 +35,10 @@ namespace BomberCowClient
 
         //not used right now
         private int HUDYSize = 0;
-        private int ChatYSize = 50;
+
+        // Chat
+        private int ChatYSize = 100;
+        private List<string> lstChat = new List<string>();
 
         private Boolean MapExists = false;
 
@@ -83,7 +86,7 @@ namespace BomberCowClient
             String[] currow = dummy.Split(':');
             MapXSize = currow.Length;
 
-            Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize +ChatYSize);
+            Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
             Graphics g = Graphics.FromImage(map);
             Size imgSize = new Size(BlockSize, BlockSize);
             Image img1 = BomberCowClient.Properties.Resources.wall;
@@ -197,6 +200,23 @@ namespace BomberCowClient
                     }
                 }
             }
+
+            // Draw chat
+            if (true)
+            {
+                int counter = 0;
+                int textYSize = 15;
+                StringFormat stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Near;
+                //stringFormat.LineAlignment = StringAlignment.Center;
+                foreach (string oMessage in lstChat)
+                {
+                    RectangleF rects = new RectangleF(0, (MapYSize * BlockSize) + (counter * textYSize), MapXSize * BlockSize, (MapYSize * BlockSize) + ChatYSize);
+                    g.DrawString(oMessage, new Font("Tahoma", 10), Brushes.Green, rects, stringFormat);
+                    counter++;
+                }
+            }
+
             g.Dispose();
             img1.Dispose();
             img2.Dispose();
@@ -232,6 +252,15 @@ namespace BomberCowClient
                 graphicsHandle.DrawImage(image, 0, 0, newWidth, newHeight);
             }
             return newImage;
+        }
+
+        public void addchat(string message)
+        {
+            if (lstChat.Count == 6)
+            {
+                lstChat.RemoveAt(0);
+            }
+            lstChat.Add(message);
         }
     }
 }

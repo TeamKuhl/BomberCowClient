@@ -114,6 +114,7 @@ namespace BomberCowClient
                     if (!getUpdates)
                     {
                         lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add("You joined the Server"); }));
+                        BomberMap.addchat("You joined the Server");
                         client.send("GetMap", "");
                         client.send("GetPlayerList", "");
                     }
@@ -124,6 +125,7 @@ namespace BomberCowClient
                             if (oplayer.ID == PlayerJoin[0])
                             {
                                 lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oplayer.Name + " joined the Server"); }));
+                                BomberMap.addchat(oplayer.Name + " joined the Server");
                             }
                         }
                     }
@@ -142,6 +144,7 @@ namespace BomberCowClient
                         if (oplayer.ID == message)
                         {
                             lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oplayer.Name + " left the Server"); }));
+                            BomberMap.addchat(oplayer.Name + " left the Server");
                             players.Remove(oplayer);
                             break;
                         }
@@ -157,6 +160,13 @@ namespace BomberCowClient
                 // Got message from Player
                 case "ChatMessage":
                     lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(message); }));
+                    BomberMap.addchat(message);
+
+                    // Reload Map
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
+                    }
                     break;
 
                 // Got Map strings
@@ -165,6 +175,7 @@ namespace BomberCowClient
                     if (!getUpdates)
                     {
                         lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add("Map Created"); }));
+                        BomberMap.addchat("Map Created");
                         client.send("GetPlayerList", "");
                         getUpdates = true;
                     }
@@ -286,6 +297,7 @@ namespace BomberCowClient
                         if (oPlayer.ID == message)
                         {
                             lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oPlayer.Name + " won the game"); }));
+                            BomberMap.addchat(oPlayer.Name + " won the game");
                         }
                     }
                     break;
