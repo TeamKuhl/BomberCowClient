@@ -54,6 +54,10 @@ namespace BomberCowClient
         {
             // Create formLogin
             frmLogin frmLogin = new frmLogin(this);
+
+            // Hide mainform
+            this.Opacity = 0;
+
             // Show it
             frmLogin.Show();
 
@@ -67,6 +71,9 @@ namespace BomberCowClient
             tmrUpdate.Enabled = false;
             // Create Eventhandler
             client.onReceive += new ClientReceiveHandler(ReceiveEvent);
+
+            // Show mainform
+            this.Opacity = 100;
             try
             {
                 // Connect with given IP

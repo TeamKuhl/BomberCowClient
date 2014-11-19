@@ -49,6 +49,7 @@ namespace BomberCowClient
         private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
         {
             parent.Enabled = true;
+            Environment.Exit(0);
         }
     }
 }
