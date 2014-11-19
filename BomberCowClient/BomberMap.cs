@@ -158,10 +158,8 @@ namespace BomberCowClient
                 // Draw names & player
                 foreach (Player oplayer in mainForm.players)
                 {
-                    int txtxSize = oplayer.Name.Length * 2;
-                    int halftxtxSize = Convert.ToInt32(Math.Round(Convert.ToDecimal(txtxSize) / 2));
-                    RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - halftxtxSize, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, ((oplayer.xPosition - 1) * BlockSize) + txtxSize, (((oplayer.yPosition - 1) * BlockSize) + 10) + HUDYSize);
-
+                    
+                    
                     if (oplayer.PlayerState == 1)
                     {
                         // Draw living player
@@ -177,7 +175,13 @@ namespace BomberCowClient
                         }
 
                         // Draw name
-                        g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf);
+                        StringFormat stringFormat = new StringFormat();
+                        stringFormat.Alignment = StringAlignment.Center;
+                        //stringFormat.LineAlignment = StringAlignment.Center;
+
+                        RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - 8, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, BlockSize + 16, BlockSize);
+
+                        g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf, stringFormat);
                     }
                 }
             }
@@ -210,23 +214,23 @@ namespace BomberCowClient
                 int textYSize = 15;
                 StringFormat stringFormat = new StringFormat();
                 stringFormat.Alignment = StringAlignment.Near;
-                //stringFormat.LineAlignment = StringAlignment.Center;
+
                 foreach (string oMessage in lstChat)
                 {
                     string[] sDummy = oMessage.Split('&');
                     int iState = Convert.ToInt16(sDummy[sDummy.Length - 1]);
                     string sMessage = sDummy[0];
+
                     if (sDummy.Length > 2)
                     {
                         for (int iCounter = 1; iCounter < sDummy.Length - 1; iCounter++)
                         {
-
                             sMessage = sMessage + "&" + sDummy[iCounter];
-
                         }
                     }
 
                     RectangleF rects = new RectangleF(0, (MapYSize * BlockSize) + (counter * textYSize), MapXSize * BlockSize, (MapYSize * BlockSize) + ChatYSize);
+
                     if (iState == 1)
                     {
                         g.DrawString(sMessage, new Font("Tahoma", 10), Brushes.Red, rects, stringFormat);
