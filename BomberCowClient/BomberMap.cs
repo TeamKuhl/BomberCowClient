@@ -187,10 +187,12 @@ namespace BomberCowClient
                 {
                     if (oplayer.ID == swinnerid)
                     {
-                        int stautusxtext = 8;
-                        int stautusytext = 6;
-                        RectangleF rects = new RectangleF(BlockSize * stautusxtext, BlockSize * stautusytext, BlockSize * (stautusxtext + 15), BlockSize * (stautusytext + 15));
-                        g.DrawString(oplayer.Name + " WON", new Font("Tahoma", 60), Brushes.Green, rects);
+                        StringFormat stringFormat = new StringFormat();
+                        stringFormat.Alignment = StringAlignment.Center;
+                        stringFormat.LineAlignment = StringAlignment.Center;
+
+                        RectangleF rects = new RectangleF(0, 0, MapXSize * BlockSize, MapYSize * BlockSize);
+                        g.DrawString(oplayer.Name + " won", new Font("Tahoma", 60), Brushes.Green, rects, stringFormat);
                     }
                 }
             }
