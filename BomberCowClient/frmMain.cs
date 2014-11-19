@@ -116,7 +116,7 @@ namespace BomberCowClient
                     players.Add(new Player() { ID = PlayerJoin[0], Name = PlayerJoin[1], State = 1 });
                     if (!getUpdates)
                     {
-                        BomberMap.addchat("You joined the Server");
+                        BomberMap.addchat("You joined the Server", 1);
                         client.send("GetMap", "");
                         client.send("GetPlayerList", "");
                     }
@@ -126,7 +126,7 @@ namespace BomberCowClient
                         {
                             if (oplayer.ID == PlayerJoin[0])
                             {
-                                BomberMap.addchat(oplayer.Name + " joined the Server");
+                                BomberMap.addchat(oplayer.Name + " joined the Server", 1);
                             }
                         }
                     }
@@ -144,7 +144,7 @@ namespace BomberCowClient
                     {
                         if (oplayer.ID == message)
                         {
-                            BomberMap.addchat(oplayer.Name + " left the Server");
+                            BomberMap.addchat(oplayer.Name + " left the Server", 1);
                             players.Remove(oplayer);
                             break;
                         }
@@ -159,7 +159,7 @@ namespace BomberCowClient
 
                 // Got message from Player
                 case "ChatMessage":
-                    BomberMap.addchat(message);
+                    BomberMap.addchat(message, 3);
 
                     // Reload Map
                     if (sMapString != null)
@@ -173,7 +173,7 @@ namespace BomberCowClient
 
                     if (!getUpdates)
                     {
-                        BomberMap.addchat("Map Created");
+                        BomberMap.addchat("Map Created", 2);
                         client.send("GetPlayerList", "");
                         getUpdates = true;
                     }
@@ -284,7 +284,7 @@ namespace BomberCowClient
                     {
                         if (oPlayer.ID == message)
                         {
-                            BomberMap.addchat(oPlayer.Name + " won the game");
+                            BomberMap.addchat(oPlayer.Name + " won the game", 1);
                         }
                     }
                     break;

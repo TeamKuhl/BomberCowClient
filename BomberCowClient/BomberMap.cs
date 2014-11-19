@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -17,7 +18,6 @@ namespace BomberCowClient
         private frmMain mainForm;
         private PictureBox AllPictureBox = new PictureBox();
         private PictureBox Player1PictureBox = new PictureBox();
-        private PictureBox Player2PictureBox = new PictureBox();
 
         // Size ofe the textures
         public int BlockSize = 32;
@@ -213,12 +213,36 @@ namespace BomberCowClient
                 //stringFormat.LineAlignment = StringAlignment.Center;
                 foreach (string oMessage in lstChat)
                 {
+                    string[] sDummy = oMessage.Split('&');
+                    int iState = Convert.ToInt16(sDummy[sDummy.Length - 1]);
+                    string sMessage = sDummy[0];
+                    if (sDummy.Length > 2)
+                    {
+                        for (int iCounter = 1; iCounter < sDummy.Length - 1; iCounter++)
+                        {
+
+                            sMessage = sMessage + "&" + sDummy[iCounter];
+
+                        }
+                    }
+
                     RectangleF rects = new RectangleF(0, (MapYSize * BlockSize) + (counter * textYSize), MapXSize * BlockSize, (MapYSize * BlockSize) + ChatYSize);
-                    g.DrawString(oMessage, new Font("Tahoma", 10), Brushes.Green, rects, stringFormat);
+                    if (iState == 1)
+                    {
+                        g.DrawString(sMessage, new Font("Tahoma", 10), Brushes.Red, rects, stringFormat);
+                    }
+                    if (iState == 2)
+                    {
+                        g.DrawString(sMessage, new Font("Tahoma", 10), Brushes.Blue, rects, stringFormat);
+                    }
+                    if (iState == 3)
+                    {
+                        g.DrawString(sMessage, new Font("Tahoma", 10), Brushes.Green, rects, stringFormat);
+                    }
                     counter++;
                 }
 
-                if(getInput)
+                if (getInput)
                 {
                     Pen redPen = new Pen(Color.Red, 3);
                     Rectangle rect = new Rectangle(1, (MapYSize * BlockSize) + ChatYSize - 30, (MapXSize * BlockSize) - 3, 28);
@@ -278,14 +302,18 @@ namespace BomberCowClient
             inputMsg = input;
         }
 
-        public void addchat(string message)
+        public void addchat(string message, int status)
         {
-            
+            // status
+            // 1 = Server (not included)
+            // 2 = Client
+            // 3 = Player
+
             if (lstChat.Count == 6)
             {
                 lstChat.RemoveAt(0);
             }
-            lstChat.Add(message);
+            lstChat.Add(message + "&" + status);
         }
     }
 }
