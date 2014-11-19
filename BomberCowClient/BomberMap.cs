@@ -35,6 +35,7 @@ namespace BomberCowClient
 
         //not used right now
         private int HUDYSize = 0;
+        private int ChatYSize = 50;
 
         private Boolean MapExists = false;
 
@@ -60,7 +61,7 @@ namespace BomberCowClient
                 // Create picturebox
                 AllPictureBox.Location = new Point(10, 10);
                 AllPictureBox.Name = "MapPictureBox";
-                AllPictureBox.Size = new Size(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize);
+                AllPictureBox.Size = new Size(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
                 AllPictureBox.Visible = true;
                 AllPictureBox.BackgroundImage = mapimg;
                 mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
@@ -82,7 +83,7 @@ namespace BomberCowClient
             String[] currow = dummy.Split(':');
             MapXSize = currow.Length;
 
-            Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize);
+            Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize +ChatYSize);
             Graphics g = Graphics.FromImage(map);
             Size imgSize = new Size(BlockSize, BlockSize);
             Image img1 = BomberCowClient.Properties.Resources.wall;
@@ -93,7 +94,7 @@ namespace BomberCowClient
             Image bomb = BomberCowClient.Properties.Resources.bomb;
             Image explode = BomberCowClient.Properties.Resources.explode;
 
-            img1 = ResizeImage(img1, imgSize);//, true);
+            img1 = ResizeImage(img1, imgSize);
             img2 = ResizeImage(img2, imgSize);
             back = ResizeImage(back, imgSize);
             player = ResizeImage(player, imgSize);
@@ -199,8 +200,6 @@ namespace BomberCowClient
             g.Dispose();
             img1.Dispose();
             img2.Dispose();
-
-            //map.Save("map.png", System.Drawing.Imaging.ImageFormat.Png);
 
             // Return complete image
             return map;

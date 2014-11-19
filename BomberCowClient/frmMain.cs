@@ -68,7 +68,6 @@ namespace BomberCowClient
         // Connect to the Server
         public void connect()
         {
-            tmrUpdate.Enabled = false;
             // Create Eventhandler
             client.onReceive += new ClientReceiveHandler(ReceiveEvent);
 
@@ -254,9 +253,9 @@ namespace BomberCowClient
                         BomberMap.createMap(sMapString);
                     }
                     break;
-                
+
                 case "RoundStatus":
-                    if(message == "1")
+                    if (message == "1")
                     {
                         BomberMap.playerwon(" ", false);
                     }
@@ -278,7 +277,7 @@ namespace BomberCowClient
                         }
                     }
                     break;
-                
+
                 // A player has won
                 case "PlayerWin":
                     BomberMap.playerwon(message, true);
@@ -420,34 +419,5 @@ namespace BomberCowClient
                 txtChat.Enabled = false;
             }
         }
-
-        private void tmrUpdate_Tick(object sender, EventArgs e)
-        {
-            foreach (Item oitem in items)
-            {
-                if (oitem.type == "explode")
-                {
-                    oitem.livetime = oitem.livetime + 1;
-                }
-            }
-
-            foreach (Item oitem in items)
-            {
-                if (oitem.type == "explode")
-                {
-                    if (oitem.livetime >= 5)
-                    {
-                        items.Remove(oitem);
-                        break;
-                    }
-                }
-            }
-            // Reload Map
-            if (sMapString != null)
-            {
-                BomberMap.createMap(sMapString);
-            }
-        }
-
     }
 }

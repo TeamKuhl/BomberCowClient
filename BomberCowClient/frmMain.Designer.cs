@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.lstChat = new System.Windows.Forms.ListBox();
             this.txtChat = new System.Windows.Forms.TextBox();
-            this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // lstChat
@@ -51,11 +49,6 @@
             this.txtChat.Size = new System.Drawing.Size(19, 20);
             this.txtChat.TabIndex = 1;
             this.txtChat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtChat_KeyDown);
-            // 
-            // tmrUpdate
-            // 
-            this.tmrUpdate.Interval = 50;
-            this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
             // frmMain
             // 
@@ -80,7 +73,6 @@
 
         private System.Windows.Forms.ListBox lstChat;
         private System.Windows.Forms.TextBox txtChat;
-        private System.Windows.Forms.Timer tmrUpdate;
 
 
     }
