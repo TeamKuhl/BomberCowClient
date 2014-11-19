@@ -28,27 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lstChat = new System.Windows.Forms.ListBox();
-            this.txtChat = new System.Windows.Forms.TextBox();
+            this.txtdummy = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // lstChat
+            // txtdummy
             // 
-            this.lstChat.Enabled = false;
-            this.lstChat.FormattingEnabled = true;
-            this.lstChat.Location = new System.Drawing.Point(42, 10);
-            this.lstChat.Name = "lstChat";
-            this.lstChat.Size = new System.Drawing.Size(19, 95);
-            this.lstChat.TabIndex = 0;
-            // 
-            // txtChat
-            // 
-            this.txtChat.Enabled = false;
-            this.txtChat.Location = new System.Drawing.Point(42, 110);
-            this.txtChat.Name = "txtChat";
-            this.txtChat.Size = new System.Drawing.Size(19, 20);
-            this.txtChat.TabIndex = 1;
-            this.txtChat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtChat_KeyDown);
+            this.txtdummy.Enabled = false;
+            this.txtdummy.Location = new System.Drawing.Point(-12, -24);
+            this.txtdummy.Name = "txtdummy";
+            this.txtdummy.Size = new System.Drawing.Size(10, 20);
+            this.txtdummy.TabIndex = 0;
+            this.txtdummy.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtdummy_KeyDown);
+            this.txtdummy.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtdummy_KeyUp);
             // 
             // frmMain
             // 
@@ -57,8 +48,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(697, 322);
-            this.Controls.Add(this.txtChat);
-            this.Controls.Add(this.lstChat);
+            this.Controls.Add(this.txtdummy);
             this.Name = "frmMain";
             this.Text = "BomberCow";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -71,8 +61,9 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox lstChat;
-        private System.Windows.Forms.TextBox txtChat;
+        private System.Windows.Forms.TextBox txtdummy;
+
+
 
 
     }

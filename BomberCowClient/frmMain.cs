@@ -44,6 +44,9 @@ namespace BomberCowClient
         // ID des clients
         private string myid;
 
+        // Chat
+        private Boolean chatactive = false;
+
         public frmMain()
         {
             InitializeComponent();
@@ -113,7 +116,6 @@ namespace BomberCowClient
                     players.Add(new Player() { ID = PlayerJoin[0], Name = PlayerJoin[1], State = 1 });
                     if (!getUpdates)
                     {
-                        lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add("You joined the Server"); }));
                         BomberMap.addchat("You joined the Server");
                         client.send("GetMap", "");
                         client.send("GetPlayerList", "");
@@ -124,7 +126,6 @@ namespace BomberCowClient
                         {
                             if (oplayer.ID == PlayerJoin[0])
                             {
-                                lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oplayer.Name + " joined the Server"); }));
                                 BomberMap.addchat(oplayer.Name + " joined the Server");
                             }
                         }
@@ -143,7 +144,6 @@ namespace BomberCowClient
                     {
                         if (oplayer.ID == message)
                         {
-                            lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oplayer.Name + " left the Server"); }));
                             BomberMap.addchat(oplayer.Name + " left the Server");
                             players.Remove(oplayer);
                             break;
@@ -159,7 +159,6 @@ namespace BomberCowClient
 
                 // Got message from Player
                 case "ChatMessage":
-                    lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(message); }));
                     BomberMap.addchat(message);
 
                     // Reload Map
@@ -174,7 +173,6 @@ namespace BomberCowClient
 
                     if (!getUpdates)
                     {
-                        lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add("Map Created"); }));
                         BomberMap.addchat("Map Created");
                         client.send("GetPlayerList", "");
                         getUpdates = true;
@@ -183,20 +181,10 @@ namespace BomberCowClient
                     sMapString = message;
                     BomberMap.createMap(sMapString);
 
-                    if (!fitForm)
-                    {
-                        lstChat.Invoke(new emptyFunction(delegate()
-                        {
-                            lstChat.Left = this.Width - 10;
-                            lstChat.Size = new Size(322, 95);
-                        }));
-                        txtChat.Invoke(new emptyFunction(delegate()
-                        {
-                            txtChat.Left = lstChat.Left;
-                            txtChat.Size = new Size(206, 20);
-                        }));
-                        fitForm = true;
-                    }
+                    //if (!fitForm)
+                    //{
+                    //    fitForm = true;
+                    //}
                     break;
 
                 // Got player state
@@ -296,7 +284,6 @@ namespace BomberCowClient
                     {
                         if (oPlayer.ID == message)
                         {
-                            lstChat.Invoke(new emptyFunction(delegate() { lstChat.Items.Add(oPlayer.Name + " won the game"); }));
                             BomberMap.addchat(oPlayer.Name + " won the game");
                         }
                     }
@@ -348,7 +335,6 @@ namespace BomberCowClient
 
                     break;
             }
-            lstChat.Invoke(new emptyFunction(delegate() { lstChat.SelectedIndex = lstChat.Items.Count - 1; }));
         }
 
         private void explosionHandler(Object explosions)
@@ -386,49 +372,75 @@ namespace BomberCowClient
                 {
                     if (oplayer.PlayerState == 1)
                     {
-                        // Send move commands to the Server
-                        if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+                        if (!chatactive)
                         {
-                            client.send("Move", "s");
-                        }
-                        if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
-                        {
-                            client.send("Move", "n");
-                        }
-                        if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
-                        {
-                            client.send("Move", "w");
-                        }
-                        if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
-                        {
-                            client.send("Move", "e");
-                        }
-                        if (e.KeyCode == Keys.Space)
-                        {
-                            client.send("BombPlace", "");
+                            // Send move commands to the Server
+                            if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+                            {
+                                client.send("Move", "s");
+                            }
+                            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
+                            {
+                                client.send("Move", "n");
+                            }
+                            if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
+                            {
+                                client.send("Move", "w");
+                            }
+                            if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
+                            {
+                                client.send("Move", "e");
+                            }
+                            if (e.KeyCode == Keys.Space)
+                            {
+                                client.send("BombPlace", "");
+                            }
                         }
                     }
                 }
             }
 
-            // Send chat to Server
             if (e.KeyCode == Keys.Return)
             {
-                txtChat.Enabled = true;
-                txtChat.Focus();
+                BomberMap.addInput("", true);
+                txtdummy.Enabled = true;
+                txtdummy.Focus();
+            }
+
+            // Reload Map
+            if (sMapString != null)
+            {
+                BomberMap.createMap(sMapString);
             }
         }
 
-        private void txtChat_KeyDown(object sender, KeyEventArgs e)
+        private void txtdummy_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Return)
             {
-                if (txtChat.Text != "")
                 {
-                    client.send("ChatMessage", txtChat.Text);
-                    txtChat.Text = "";
+                    client.send("ChatMessage", txtdummy.Text);
                 }
-                txtChat.Enabled = false;
+                BomberMap.addInput("", false);
+                txtdummy.Enabled = false;
+                txtdummy.Text = "";
+
+                // Reload Map
+                if (sMapString != null)
+                {
+                    BomberMap.createMap(sMapString);
+                }
+            }
+        }
+
+        private void txtdummy_KeyUp(object sender, KeyEventArgs e)
+        {
+            BomberMap.addInput(txtdummy.Text, true);
+
+            // Reload Map
+            if (sMapString != null)
+            {
+                BomberMap.createMap(sMapString);
             }
         }
     }

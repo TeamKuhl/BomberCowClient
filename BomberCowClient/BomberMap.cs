@@ -37,8 +37,10 @@ namespace BomberCowClient
         private int HUDYSize = 0;
 
         // Chat
-        private int ChatYSize = 100;
+        private int ChatYSize = 95 + 30;
         private List<string> lstChat = new List<string>();
+        private Boolean getInput = false;
+        private string inputMsg;
 
         private Boolean MapExists = false;
 
@@ -106,7 +108,7 @@ namespace BomberCowClient
             explode = ResizeImage(explode, imgSize);
 
             // Clear
-            g.Clear(Color.Black);
+            g.Clear(Color.Gray);
 
             // Draw map
             for (int yCounter = 0; yCounter < MapYSize; yCounter++)
@@ -215,6 +217,22 @@ namespace BomberCowClient
                     g.DrawString(oMessage, new Font("Tahoma", 10), Brushes.Green, rects, stringFormat);
                     counter++;
                 }
+
+                if(getInput)
+                {
+                    Pen redPen = new Pen(Color.Red, 3);
+                    Rectangle rect = new Rectangle(1, (MapYSize * BlockSize) + ChatYSize - 30, (MapXSize * BlockSize) - 3, 28);
+                    g.DrawRectangle(redPen, rect);
+
+                    RectangleF rects = new RectangleF(2, (MapYSize * BlockSize) + ChatYSize - 29, (MapXSize * BlockSize) - 4, 26);
+                    g.DrawString(inputMsg, new Font("Tahoma", 14), Brushes.Green, rects, stringFormat);
+                }
+                else
+                {
+                    Pen blackPen = new Pen(Color.Black, 3);
+                    Rectangle rect = new Rectangle(1, (MapYSize * BlockSize) + ChatYSize - 30, (MapXSize * BlockSize) - 3, 28);
+                    g.DrawRectangle(blackPen, rect);
+                }
             }
 
             g.Dispose();
@@ -254,8 +272,15 @@ namespace BomberCowClient
             return newImage;
         }
 
+        public void addInput(string input, Boolean writing)
+        {
+            getInput = writing;
+            inputMsg = input;
+        }
+
         public void addchat(string message)
         {
+            
             if (lstChat.Count == 6)
             {
                 lstChat.RemoveAt(0);
