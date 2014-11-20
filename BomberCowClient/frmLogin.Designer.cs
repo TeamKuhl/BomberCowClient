@@ -42,6 +42,7 @@
             this.txtName.Size = new System.Drawing.Size(100, 20);
             this.txtName.TabIndex = 0;
             this.txtName.Text = "TestUser";
+            this.txtName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
             // btnLogin
             // 
@@ -60,6 +61,7 @@
             this.txtIp.Size = new System.Drawing.Size(100, 20);
             this.txtIp.TabIndex = 2;
             this.txtIp.Text = "10.1.92.28";
+            this.txtIp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtIp_KeyDown);
             // 
             // lblIp
             // 
