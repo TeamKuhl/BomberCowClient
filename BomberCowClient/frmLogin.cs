@@ -26,6 +26,32 @@ namespace BomberCowClient
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            doLogin();
+        }
+
+        private void txtIp_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return) doLogin();
+        }
+
+        private void txtName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return) doLogin();
+        }
+
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+            parent.Enabled = false;
+        }
+
+        private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            parent.Enabled = true;
+            Environment.Exit(0);
+        }
+
+        private void doLogin()
+        {
             if (txtIp.Text != "" && txtName.Text != "")
             {
                 if (txtName.Text.Length <= 10)
@@ -46,17 +72,6 @@ namespace BomberCowClient
                     MessageBox.Show("Der Name darf nicht länger als 10 Zeichen sein");
                 }
             }
-        }
-
-        private void frmLogin_Load(object sender, EventArgs e)
-        {
-            parent.Enabled = false;
-        }
-
-        private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            parent.Enabled = true;
-            Environment.Exit(0);
         }
     }
 }
