@@ -267,12 +267,13 @@ namespace BomberCowClient
                         if (oPlayer.ID == message)
                         {
                             oPlayer.State = 2;
-
+                            BomberMap.addchat("† " + oPlayer.Name, 1);
                             // Reload Map
                             if (sMapString != null)
                             {
                                 BomberMap.createMap(sMapString);
                             }
+                            break;
                         }
                     }
                     break;
@@ -285,6 +286,7 @@ namespace BomberCowClient
                         if (oPlayer.ID == message)
                         {
                             BomberMap.addchat(oPlayer.Name + " won the game", 1);
+                            break;
                         }
                     }
                     break;
@@ -416,8 +418,16 @@ namespace BomberCowClient
 
         private void txtdummy_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Escape)
+            {
+                BomberMap.addInput("", false);
+                txtdummy.Enabled = false;
+                txtdummy.Text = "";
+            }
             if (e.KeyCode == Keys.Return)
             {
+                string sDummy = txtdummy.Text.Trim();
+                if (sDummy.Length > 0)
                 {
                     client.send("ChatMessage", txtdummy.Text);
                 }
