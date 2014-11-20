@@ -308,16 +308,19 @@ namespace BomberCowClient
 
         public void addchat(string message, int status)
         {
+            string sDummy = message.Trim();
             // status
             // 1 = Server (not included)
             // 2 = Client
             // 3 = Player
-
-            if (lstChat.Count == 6)
+            if (sDummy.Length > 0)
             {
-                lstChat.RemoveAt(0);
+                if (lstChat.Count == 6)
+                {
+                    lstChat.RemoveAt(0);
+                }
+                lstChat.Add(message + "&" + status);
             }
-            lstChat.Add(message + "&" + status);
         }
     }
 }
