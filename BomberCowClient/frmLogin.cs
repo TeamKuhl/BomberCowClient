@@ -28,16 +28,23 @@ namespace BomberCowClient
         {
             if (txtIp.Text != "" && txtName.Text != "")
             {
-                btnLogin.Enabled = false;
-                parent.PlayerName = txtName.Text;
-                parent.ServerIP = txtIp.Text;
+                if (txtName.Text.Length <= 10)
+                {
+                    btnLogin.Enabled = false;
+                    parent.PlayerName = txtName.Text;
+                    parent.ServerIP = txtIp.Text;
 
-                //Call connect function
-                parent.connect();
-                parent.Enabled = true;
+                    //Call connect function
+                    parent.connect();
+                    parent.Enabled = true;
 
-                //Hide me
-                this.Visible = false;
+                    //Hide me
+                    this.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show("Der Name darf nicht länger als 10 Zeichen sein");
+                }
             }
         }
 

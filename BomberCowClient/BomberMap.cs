@@ -179,9 +179,9 @@ namespace BomberCowClient
                         stringFormat.Alignment = StringAlignment.Center;
                         //stringFormat.LineAlignment = StringAlignment.Center;
 
-                        RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - 8, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, BlockSize + 16, BlockSize);
+                        RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - 32, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, BlockSize + 64, BlockSize);
 
-                        g.DrawString(oplayer.Name, new Font("Tahoma", 8), Brushes.Green, rectf, stringFormat);
+                        g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat);
                     }
                 }
             }
@@ -262,7 +262,6 @@ namespace BomberCowClient
                 Rectangle rect = new Rectangle(1, (MapYSize * BlockSize) + ChatYSize - 30, (MapXSize * BlockSize) - 3, 28);
                 g.DrawRectangle(blackPen, rect);
             }
-
 
             g.Dispose();
             img1.Dispose();
