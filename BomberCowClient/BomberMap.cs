@@ -64,7 +64,7 @@ namespace BomberCowClient
             else
             {
                 // Create picturebox
-                AllPictureBox.Location = new Point(10, 10);
+                AllPictureBox.Location = new Point(0, 0);
                 AllPictureBox.Name = "MapPictureBox";
                 AllPictureBox.Size = new Size(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
                 AllPictureBox.Visible = true;
@@ -315,11 +315,14 @@ namespace BomberCowClient
             // 3 = Player
             if (sDummy.Length > 0)
             {
-                if (lstChat.Count == 6)
+                lock (lstChat)
                 {
-                    lstChat.RemoveAt(0);
+                    if (lstChat.Count == 6)
+                    {
+                        lstChat.RemoveAt(0);
+                    }
+                    lstChat.Add(message + "&" + status);
                 }
-                lstChat.Add(message + "&" + status);
             }
         }
     }

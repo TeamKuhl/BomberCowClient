@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.txtName = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.txtIp = new System.Windows.Forms.TextBox();
             this.lblIp = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
+            this.tmrFokus = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // txtName
@@ -81,6 +83,10 @@
             this.lblName.TabIndex = 4;
             this.lblName.Text = "Name";
             // 
+            // tmrFokus
+            // 
+            this.tmrFokus.Tick += new System.EventHandler(this.tmrFokus_Tick);
+            // 
             // frmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -108,5 +114,6 @@
         private System.Windows.Forms.TextBox txtIp;
         private System.Windows.Forms.Label lblIp;
         private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.Timer tmrFokus;
     }
 }

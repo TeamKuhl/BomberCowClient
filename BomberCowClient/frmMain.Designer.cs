@@ -47,9 +47,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(697, 322);
+            this.ClientSize = new System.Drawing.Size(363, 322);
             this.Controls.Add(this.txtdummy);
+            this.DoubleBuffered = true;
+            this.MaximizeBox = false;
             this.Name = "frmMain";
+            this.ShowInTaskbar = false;
             this.Text = "BomberCow";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);

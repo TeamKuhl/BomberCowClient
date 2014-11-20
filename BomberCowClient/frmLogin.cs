@@ -41,6 +41,7 @@ namespace BomberCowClient
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
+            tmrFokus.Enabled = true;
             parent.Enabled = false;
         }
 
@@ -72,6 +73,12 @@ namespace BomberCowClient
                     MessageBox.Show("Der Name darf nicht länger als 10 Zeichen sein");
                 }
             }
+        }
+
+        private void tmrFokus_Tick(object sender, EventArgs e)
+        {
+            tmrFokus.Enabled = false;
+            this.Focus();
         }
     }
 }

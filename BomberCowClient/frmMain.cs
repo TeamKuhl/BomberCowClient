@@ -74,8 +74,6 @@ namespace BomberCowClient
             // Create Eventhandler
             client.onReceive += new ClientReceiveHandler(ReceiveEvent);
 
-            // Show mainform
-            this.Opacity = 100;
             try
             {
                 // Connect with given IP
@@ -86,6 +84,10 @@ namespace BomberCowClient
                     MessageBox.Show("Es konnte keine Verbindung zum Server hergestellt werden", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Application.Exit();
                 }
+
+                // Show mainform
+                this.Opacity = 100;
+                this.ShowInTaskbar = true;
             }
             catch
             {
