@@ -423,6 +423,12 @@ namespace BomberCowClient
                 BomberMap.addInput("", false);
                 txtdummy.Enabled = false;
                 txtdummy.Text = "";
+
+                // Reload Map
+                if (sMapString != null)
+                {
+                    BomberMap.createMap(sMapString);
+                }
             }
             if (e.KeyCode == Keys.Return)
             {
