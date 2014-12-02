@@ -417,26 +417,34 @@ namespace BomberCowClient
                     {
                         if (!chatactive)
                         {
-                            // Send move commands to the Server
-                            if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+                            try
                             {
-                                client.send("Move", "s");
+                                // Send move commands to the Server
+                                if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+                                {
+                                    client.send("Move", "s");
+                                }
+                                if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
+                                {
+                                    client.send("Move", "n");
+                                }
+                                if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
+                                {
+                                    client.send("Move", "w");
+                                }
+                                if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
+                                {
+                                    client.send("Move", "e");
+                                }
+                                if (e.KeyCode == Keys.Space)
+                                {
+                                    client.send("BombPlace", "");
+                                }
                             }
-                            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
+                            catch
                             {
-                                client.send("Move", "n");
-                            }
-                            if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
-                            {
-                                client.send("Move", "w");
-                            }
-                            if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
-                            {
-                                client.send("Move", "e");
-                            }
-                            if (e.KeyCode == Keys.Space)
-                            {
-                                client.send("BombPlace", "");
+                                MessageBox.Show("Es ist ein Fehler aufgetreten");
+                                Environment.Exit(0);
                             }
                         }
                     }
@@ -476,7 +484,14 @@ namespace BomberCowClient
                 string sDummy = txtdummy.Text.Trim();
                 if (sDummy.Length > 0)
                 {
-                    client.send("ChatMessage", txtdummy.Text);
+                    try
+                    {
+                        client.send("ChatMessage", txtdummy.Text);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Es ist ein Fehler aufgetreten");
+                    }
                 }
                 BomberMap.addInput("", false);
                 txtdummy.Enabled = false;
