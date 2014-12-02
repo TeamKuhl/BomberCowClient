@@ -264,18 +264,57 @@ namespace BomberCowClient
 
                 // Player died
                 case "PlayerDied":
-                    foreach (Player oPlayer in players)
+                    string[] sDummy = message.Split(':');
+                    string sDeadPlayer = null;
+
+                    if (sDummy[0] == sDummy[1])
                     {
-                        if (oPlayer.ID == message)
+                        foreach (Player oPlayer in players)
                         {
-                            oPlayer.State = 2;
-                            BomberMap.addchat("† " + oPlayer.Name, 1);
-                            // Reload Map
-                            if (sMapString != null)
+                            if (oPlayer.ID == sDummy[0])
                             {
-                                BomberMap.createMap(sMapString);
+                                oPlayer.State = 2;
+                                BomberMap.addchat("† " + oPlayer.Name + " committed suicide", 1);
+                                // Reload Map
+                                if (sMapString != null)
+                                {
+                                    BomberMap.createMap(sMapString);
+                                }
+                                break;
                             }
-                            break;
+                        }
+                    }
+                    else
+                    {
+                        foreach (Player oPlayer in players)
+                        {
+                            if (oPlayer.ID == sDummy[0])
+                            {
+                                oPlayer.State = 2;
+                                //BomberMap.addchat("† " + oPlayer.Name, 1);
+                                sDeadPlayer = oPlayer.Name;
+                                // Reload Map
+                                if (sMapString != null)
+                                {
+                                    BomberMap.createMap(sMapString);
+                                }
+                                break;
+                            }
+                        }
+
+                        foreach (Player oPlayer in players)
+                        {
+                            if (oPlayer.ID == sDummy[1])
+                            {
+                                oPlayer.State = 2;
+                                BomberMap.addchat("† " + sDeadPlayer + " was killed by " + oPlayer.Name, 1);
+                                // Reload Map
+                                if (sMapString != null)
+                                {
+                                    BomberMap.createMap(sMapString);
+                                }
+                                break;
+                            }
                         }
                     }
                     break;
