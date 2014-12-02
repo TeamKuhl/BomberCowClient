@@ -230,7 +230,7 @@ namespace BomberCowClient
                     }
                 }
 
-                RectangleF rects = new RectangleF(0, (MapYSize * BlockSize) + (counter * textYSize), MapXSize * BlockSize, (MapYSize * BlockSize) + ChatYSize);
+                RectangleF rects = new RectangleF(0, ((MapYSize * BlockSize) + (counter * textYSize)) + HUDYSize, MapXSize * BlockSize, (MapYSize * BlockSize) + ChatYSize * HUDYSize);
 
                 if (iState == 1)
                 {
@@ -250,16 +250,16 @@ namespace BomberCowClient
             if (getInput)
             {
                 Pen redPen = new Pen(ColorTranslator.FromHtml("#036564"), 3);
-                Rectangle rect = new Rectangle(1, (MapYSize * BlockSize) + ChatYSize - 30, (MapXSize * BlockSize) - 3, 28);
+                Rectangle rect = new Rectangle(1, ((MapYSize * BlockSize) + ChatYSize - 30) + HUDYSize, (MapXSize * BlockSize) - 3, 28);
                 g.DrawRectangle(redPen, rect);
 
-                RectangleF rects = new RectangleF(2, (MapYSize * BlockSize) + ChatYSize - 29, (MapXSize * BlockSize) - 4, 26);
+                RectangleF rects = new RectangleF(2, ((MapYSize * BlockSize) + ChatYSize - 29) + HUDYSize, (MapXSize * BlockSize) - 4, 26);
                 g.DrawString(inputMsg, new Font("Tahoma", 14), sbChat, rects, stringFormat2);
             }
             else
             {
                 Pen blackPen = new Pen(ColorTranslator.FromHtml("#033649"), 3);
-                Rectangle rect = new Rectangle(1, (MapYSize * BlockSize) + ChatYSize - 30, (MapXSize * BlockSize) - 3, 28);
+                Rectangle rect = new Rectangle(1, ((MapYSize * BlockSize) + ChatYSize - 30) + HUDYSize, (MapXSize * BlockSize) - 3, 28);
                 g.DrawRectangle(blackPen, rect);
             }
 
