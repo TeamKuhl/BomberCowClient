@@ -123,6 +123,7 @@ namespace BomberCowClient
                         BomberMap.addchat("You joined the Server", 1);
                         client.send("GetMap", "");
                         client.send("GetPlayerList", "");
+                        client.send("GetModelList", "");
                     }
                     else
                     {
@@ -382,13 +383,28 @@ namespace BomberCowClient
                     break;
                 case "PlayerModel":
                     string[] sImageDummy = message.Split(':');
-                        foreach (Player oplayer in players)
+                    foreach (Player oplayer in players)
+                    {
+                        if (oplayer.ID == sImageDummy[0])
                         {
-                            if (oplayer.ID == sImageDummy[0])
-                            {
-                                oplayer.Skin = PlayerImage.ImageFromBase64String(sImageDummy[1]);
-                            }
+                            oplayer.Skin = PlayerImage.ImageFromBase64String(sImageDummy[1]);
                         }
+                    }
+
+                    // Reload Map
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
+                    }
+                    break;
+
+                case "ModelList":
+                    string[] sModels = message.Split(';');
+                    foreach(string sModel in sModels)
+                    {
+                        string[] sModelSplit = sModel.Split(':');
+                        listBox1.Invoke(new emptyFunction(delegate() { listBox1.Items.Add(sModelSplit[0]); }));
+                    }
                     break;
             }
         }
@@ -527,6 +543,11 @@ namespace BomberCowClient
             {
                 BomberMap.createMap(sMapString);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            client.send("SetPlayerModel", Convert.ToString(listBox1.SelectedItem));
         }
     }
 }
