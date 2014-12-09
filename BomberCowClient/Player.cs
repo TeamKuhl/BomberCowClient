@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace BomberCowClient
 {
@@ -14,5 +15,6 @@ namespace BomberCowClient
         public int yPosition;
         public int State; //1 = alive 2 = dead
         public int PlayerState;
+        public Image Skin;
     }
 }

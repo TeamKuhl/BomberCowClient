@@ -15,6 +15,7 @@ namespace BomberCowClient
     public partial class frmMain : Form
     {
         private Client client = new Client();
+        private PlayerImage PlayerImage = new PlayerImage();
         private BomberMap BomberMap;
 
         // Create a list of players
@@ -116,6 +117,7 @@ namespace BomberCowClient
                     string[] PlayerJoin = message.Split(':');
 
                     players.Add(new Player() { ID = PlayerJoin[0], Name = PlayerJoin[1], State = 1 });
+                    client.send("GetPlayerModel", PlayerJoin[0]);
                     if (!getUpdates)
                     {
                         BomberMap.addchat("You joined the Server", 1);
@@ -239,6 +241,7 @@ namespace BomberCowClient
                             players.Add(new Player() { ID = PlayerandId[0], Name = PlayerandId[1] });
                             client.send("GetPlayerPosition", PlayerandId[0]);
                             client.send("GetPlayerStatus", PlayerandId[0]);
+                            client.send("GetPlayerModel", PlayerandId[0]);
                         }
                     }
                     break;
@@ -376,6 +379,16 @@ namespace BomberCowClient
                     Thread thread = new Thread(pts);
                     thread.Start(explosions);
 
+                    break;
+                case "PlayerModel":
+                    string[] sImageDummy = message.Split(':');
+                        foreach (Player oplayer in players)
+                        {
+                            if (oplayer.ID == sImageDummy[0])
+                            {
+                                oplayer.Skin = PlayerImage.ImageFromBase64String(sImageDummy[1]);
+                            }
+                        }
                     break;
             }
         }

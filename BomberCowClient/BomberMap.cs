@@ -94,7 +94,7 @@ namespace BomberCowClient
             Image img1 = BomberCowClient.Properties.Resources.wall;
             Image img2 = BomberCowClient.Properties.Resources.breakable;
             Image back = BomberCowClient.Properties.Resources.back;
-            Image player = BomberCowClient.Properties.Resources.player;
+            Image player;
             Image playerDead = BomberCowClient.Properties.Resources.playerDead;
             Image bomb = BomberCowClient.Properties.Resources.bomb;
             Image explode = BomberCowClient.Properties.Resources.explode;
@@ -102,7 +102,6 @@ namespace BomberCowClient
             img1 = ResizeImage(img1, imgSize);
             img2 = ResizeImage(img2, imgSize);
             back = ResizeImage(back, imgSize);
-            player = ResizeImage(player, imgSize);
             playerDead = ResizeImage(playerDead, imgSize);
             bomb = ResizeImage(bomb, imgSize);
             explode = ResizeImage(explode, imgSize);
@@ -165,6 +164,8 @@ namespace BomberCowClient
                         // Draw living player
                         if (oplayer.PlayerState == 1)
                         {
+                            player = oplayer.Skin;
+                            player = ResizeImage(player, imgSize);
                             g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
                         }
 
