@@ -400,7 +400,7 @@ namespace BomberCowClient
 
                 case "ModelList":
                     string[] sModels = message.Split(';');
-                    foreach(string sModel in sModels)
+                    foreach (string sModel in sModels)
                     {
                         string[] sModelSplit = sModel.Split(':');
                         listBox1.Invoke(new emptyFunction(delegate() { listBox1.Items.Add(sModelSplit[0]); }));
@@ -480,6 +480,11 @@ namespace BomberCowClient
                 }
             }
 
+            if (e.KeyCode == Keys.Tab)
+            {
+                BomberMap.showstats(true);
+            }
+
             if (e.KeyCode == Keys.Return)
             {
                 BomberMap.addInput("", true);
@@ -548,6 +553,20 @@ namespace BomberCowClient
         private void button1_Click(object sender, EventArgs e)
         {
             client.send("SetPlayerModel", Convert.ToString(listBox1.SelectedItem));
+        }
+
+        private void frmMain_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab)
+            {
+                BomberMap.showstats(false);
+
+                // Reload Map
+                if (sMapString != null)
+                {
+                    BomberMap.createMap(sMapString);
+                }
+            }
         }
     }
 }

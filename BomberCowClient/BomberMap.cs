@@ -44,6 +44,9 @@ namespace BomberCowClient
 
         private Boolean MapExists = false;
 
+        // PlayerStats
+        private Boolean bshowStats = false;
+
         public BomberMap(frmMain mainform)
         {
             this.mainForm = mainform;
@@ -191,6 +194,29 @@ namespace BomberCowClient
                 // unbehandelter Fehler
             }
 
+            // Draw playerlist
+            if (bshowStats)
+            {
+                Pen redPen = new Pen(Color.FromArgb(24, 116, 205), 10);
+                SolidBrush blueBrush = new SolidBrush(Color.FromArgb(90, 0, 170, 238));
+                Rectangle rect = new Rectangle(10, 10 + HUDYSize, (MapXSize * BlockSize) - 20, (BlockSize * MapYSize) - 20);
+                g.DrawRectangle(redPen, rect);
+                g.FillRectangle(blueBrush, rect);
+
+                int Lstcounter = 0;
+                foreach (Player oPlayer in mainForm.players)
+                {
+                    StringFormat stringFormat = new StringFormat();
+                    stringFormat.Alignment = StringAlignment.Center;
+                    stringFormat.LineAlignment = StringAlignment.Center;
+
+                    RectangleF rects = new RectangleF(10, 20 + (Lstcounter * 30), (MapXSize * BlockSize) - 20, 30);
+
+                    g.DrawString(oPlayer.Name, new Font("Tahoma", 20), Brushes.Red, rects, stringFormat);
+                    Lstcounter++;
+                }
+            }
+
             // Draw message
             if (bplayerwon == true)
             {
@@ -325,6 +351,11 @@ namespace BomberCowClient
                     lstChat.Add(message + "&" + status);
                 }
             }
+        }
+
+        public void showstats(Boolean bShow)
+        {
+            bshowStats = bShow;
         }
     }
 }
