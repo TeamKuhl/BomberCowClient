@@ -48,6 +48,12 @@ namespace BomberCowClient
         // Chat
         private Boolean chatactive = false;
 
+        // Create a List of Skins
+        private List<string> skins = new List<string>();
+
+        // Useing Skin
+        private int iSkin = 0;
+
         public frmMain()
         {
             InitializeComponent();
@@ -116,17 +122,19 @@ namespace BomberCowClient
                 case "Join":
                     string[] PlayerJoin = message.Split(':');
 
-                    players.Add(new Player() { ID = PlayerJoin[0], Name = PlayerJoin[1], State = 1 });
-                    client.send("GetPlayerModel", PlayerJoin[0]);
                     if (!getUpdates)
                     {
                         BomberMap.addchat("You joined the Server", 1);
+                        //client.send("GetPlayerList", "");
                         client.send("GetMap", "");
-                        client.send("GetPlayerList", "");
+                        //client.send("GetPlayerList", "");
                         client.send("GetModelList", "");
+
                     }
                     else
                     {
+                        players.Add(new Player() { ID = PlayerJoin[0], Name = PlayerJoin[1], State = 1 });
+                        client.send("GetPlayerModel", PlayerJoin[0]);
                         foreach (Player oplayer in players)
                         {
                             if (oplayer.ID == PlayerJoin[0])
@@ -243,6 +251,7 @@ namespace BomberCowClient
                             client.send("GetPlayerPosition", PlayerandId[0]);
                             client.send("GetPlayerStatus", PlayerandId[0]);
                             client.send("GetPlayerModel", PlayerandId[0]);
+                            client.send("GetPlayerScore", PlayerandId[0]);
                         }
                     }
                     break;
@@ -381,6 +390,7 @@ namespace BomberCowClient
                     thread.Start(explosions);
 
                     break;
+
                 case "PlayerModel":
                     string[] sImageDummy = message.Split(':');
                     foreach (Player oplayer in players)
@@ -403,7 +413,20 @@ namespace BomberCowClient
                     foreach (string sModel in sModels)
                     {
                         string[] sModelSplit = sModel.Split(':');
-                        listBox1.Invoke(new emptyFunction(delegate() { listBox1.Items.Add(sModelSplit[0]); }));
+                        skins.Add(sModelSplit[0]);
+                    }
+                    break;
+
+                case "PlayerScore":
+                    string[] sScoreDummy = message.Split(':');
+                    foreach (Player oplayer in players)
+                    {
+                        if (oplayer.ID == sScoreDummy[0])
+                        {
+                            oplayer.Score = Convert.ToInt32(sScoreDummy[1]);
+                            oplayer.Kills = Convert.ToInt32(sScoreDummy[2]);
+                            oplayer.Deaths = Convert.ToInt32(sScoreDummy[3]);
+                        }
                     }
                     break;
             }
@@ -468,6 +491,36 @@ namespace BomberCowClient
                                 if (e.KeyCode == Keys.Space)
                                 {
                                     client.send("BombPlace", "");
+                                }
+                                if (e.KeyCode == Keys.M)
+                                {
+                                    if (skins.Count > 0)
+                                    {
+                                        if (iSkin < skins.Count - 1)
+                                        {
+                                            iSkin++;
+                                        }
+                                        else
+                                        {
+                                            iSkin = 0;
+                                        }
+                                        client.send("SetPlayerModel", skins[iSkin]);
+                                    }
+                                }
+                                if (e.KeyCode == Keys.N)
+                                {
+                                    if (skins.Count > 0)
+                                    {
+                                        if (iSkin > 0)
+                                        {
+                                            iSkin--;
+                                        }
+                                        else
+                                        {
+                                            iSkin = skins.Count - 1;
+                                        }
+                                        client.send("SetPlayerModel", skins[iSkin]);
+                                    }
                                 }
                             }
                             catch

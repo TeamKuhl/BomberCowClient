@@ -16,5 +16,8 @@ namespace BomberCowClient
         public int State; //1 = alive 2 = dead
         public int PlayerState;
         public Image Skin;
+        public int Score;
+        public int Kills;
+        public int Deaths;
     }
 }

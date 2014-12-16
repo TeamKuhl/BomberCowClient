@@ -197,22 +197,37 @@ namespace BomberCowClient
             // Draw playerlist
             if (bshowStats)
             {
-                Pen redPen = new Pen(Color.FromArgb(24, 116, 205), 10);
-                SolidBrush blueBrush = new SolidBrush(Color.FromArgb(90, 0, 170, 238));
+                Pen borderpen = new Pen(Color.FromArgb(255, 3, 22, 52), 20);
+                SolidBrush backbrush = new SolidBrush(Color.FromArgb(150, 3, 54, 73));
                 Rectangle rect = new Rectangle(10, 10 + HUDYSize, (MapXSize * BlockSize) - 20, (BlockSize * MapYSize) - 20);
-                g.DrawRectangle(redPen, rect);
-                g.FillRectangle(blueBrush, rect);
+                g.DrawRectangle(borderpen, rect);
+                g.FillRectangle(backbrush, rect);
 
                 int Lstcounter = 0;
                 foreach (Player oPlayer in mainForm.players)
                 {
                     StringFormat stringFormat = new StringFormat();
-                    stringFormat.Alignment = StringAlignment.Center;
-                    stringFormat.LineAlignment = StringAlignment.Center;
+                    stringFormat.Alignment = StringAlignment.Near;
+                    stringFormat.LineAlignment = StringAlignment.Near;
+                    StringFormat stringFormat1 = new StringFormat();
+                    stringFormat1.Alignment = StringAlignment.Center;
+                    stringFormat1.LineAlignment = StringAlignment.Center;
 
                     RectangleF rects = new RectangleF(10, 20 + (Lstcounter * 30), (MapXSize * BlockSize) - 20, 30);
 
-                    g.DrawString(oPlayer.Name, new Font("Tahoma", 20), Brushes.Red, rects, stringFormat);
+                    SolidBrush textdeadbrush = new SolidBrush(Color.FromArgb(255, 205, 179, 128));
+                    SolidBrush textlivebrush = new SolidBrush(Color.FromArgb(255, 232, 221, 203));
+
+                    if (oPlayer.PlayerState == 1)
+                    {
+                        g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textlivebrush, rects, stringFormat);
+                        g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textlivebrush, rects, stringFormat1);
+                    }
+                    else
+                    {
+                        g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textdeadbrush, rects, stringFormat);
+                        g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textdeadbrush, rects, stringFormat1);
+                    }
                     Lstcounter++;
                 }
             }
