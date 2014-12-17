@@ -162,7 +162,7 @@ namespace BomberCowClient
 
             try
             {
-                // Draw names & player
+                // Draw player
                 foreach (Player oplayer in mainForm.players)
                 {
 
@@ -182,11 +182,16 @@ namespace BomberCowClient
                         //{
                         //    g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
                         //}
+                    }
+                }
 
-                        // Draw name
+                // Draw names
+                foreach (Player oplayer in mainForm.players)
+                {
+                    if (oplayer.PlayerState == 1)
+                    {
                         StringFormat stringFormat = new StringFormat();
                         stringFormat.Alignment = StringAlignment.Center;
-                        //stringFormat.LineAlignment = StringAlignment.Center;
 
                         RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - 32, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, BlockSize + 64, BlockSize);
 
