@@ -115,6 +115,7 @@ namespace BomberCowClient
                     myid = message;
 
                     // Set Client name = PlayerName
+                    client.send("GetTextures", "");
                     client.send("PlayerInfo", PlayerName);
                     break;
 
@@ -126,7 +127,6 @@ namespace BomberCowClient
                     {
                         BomberMap.addchat("You joined the Server", 1);
                         //client.send("GetPlayerList", "");
-                        client.send("GetTextures", "");
                         client.send("GetMap", "");
                         //client.send("GetPlayerList", "");
                         client.send("GetModelList", "");
