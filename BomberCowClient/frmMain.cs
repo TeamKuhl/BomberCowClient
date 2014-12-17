@@ -618,7 +618,12 @@ namespace BomberCowClient
             {
                 BomberMap.addInput(txtdummy.Text, true);
             }
-
+            else
+            {
+                BomberMap.addInput("", false);
+                txtdummy.Enabled = false;
+                txtdummy.Text = "";
+            }
             // Reload Map
             if (sMapString != null)
             {
