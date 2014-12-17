@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLogin));
             this.txtName = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.txtIp = new System.Windows.Forms.TextBox();
@@ -43,7 +44,7 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(100, 20);
             this.txtName.TabIndex = 0;
-            this.txtName.Text = "TestUser";
+            this.txtName.Tag = "";
             this.txtName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
             // btnLogin
@@ -62,7 +63,6 @@
             this.txtIp.Name = "txtIp";
             this.txtIp.Size = new System.Drawing.Size(100, 20);
             this.txtIp.TabIndex = 2;
-            this.txtIp.Text = "10.1.92.28";
             this.txtIp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtIp_KeyDown);
             // 
             // lblIp
@@ -97,6 +97,7 @@
             this.Controls.Add(this.txtIp);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtName);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmLogin";
             this.Text = "Login";
             this.TopMost = true;

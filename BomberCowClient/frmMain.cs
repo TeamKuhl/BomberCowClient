@@ -126,6 +126,7 @@ namespace BomberCowClient
                     {
                         BomberMap.addchat("You joined the Server", 1);
                         //client.send("GetPlayerList", "");
+                        client.send("GetTextures", "");
                         client.send("GetMap", "");
                         //client.send("GetPlayerList", "");
                         client.send("GetModelList", "");
@@ -391,6 +392,11 @@ namespace BomberCowClient
 
                     break;
 
+                case "Textures":
+                    string[] sSplitTex = message.Split(';');
+                    BomberMap.settextures(sSplitTex);
+                    break;
+
                 case "PlayerModel":
                     string[] sImageDummy = message.Split(':');
                     foreach (Player oplayer in players)
@@ -592,22 +598,6 @@ namespace BomberCowClient
             }
         }
 
-        private void txtdummy_KeyUp(object sender, KeyEventArgs e)
-        {
-            BomberMap.addInput(txtdummy.Text, true);
-
-            // Reload Map
-            if (sMapString != null)
-            {
-                BomberMap.createMap(sMapString);
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            client.send("SetPlayerModel", Convert.ToString(listBox1.SelectedItem));
-        }
-
         private void frmMain_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Tab)
@@ -619,6 +609,20 @@ namespace BomberCowClient
                 {
                     BomberMap.createMap(sMapString);
                 }
+            }
+        }
+
+        private void txtdummy_TextChanged(object sender, EventArgs e)
+        {
+            if (txtdummy.Text != "")
+            {
+                BomberMap.addInput(txtdummy.Text, true);
+            }
+
+            // Reload Map
+            if (sMapString != null)
+            {
+                BomberMap.createMap(sMapString);
             }
         }
     }

@@ -15,6 +15,8 @@ namespace BomberCowClient
 
     class BomberMap
     {
+        private PlayerImage PlayerImage = new PlayerImage();
+
         private frmMain mainForm;
         private PictureBox AllPictureBox = new PictureBox();
         private PictureBox Player1PictureBox = new PictureBox();
@@ -46,6 +48,9 @@ namespace BomberCowClient
 
         // PlayerStats
         private Boolean bshowStats = false;
+
+        // Textures
+        private Dictionary<string, string> textures = new Dictionary<string, string>();
 
         public BomberMap(frmMain mainform)
         {
@@ -94,18 +99,18 @@ namespace BomberCowClient
             Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
             Graphics g = Graphics.FromImage(map);
             Size imgSize = new Size(BlockSize, BlockSize);
-            Image img1 = BomberCowClient.Properties.Resources.wall;
-            Image img2 = BomberCowClient.Properties.Resources.breakable;
-            Image back = BomberCowClient.Properties.Resources.back;
+            Image img1 = PlayerImage.ImageFromBase64String(textures["0"]);
+            Image img2 = PlayerImage.ImageFromBase64String(textures["2"]);
+            Image back = PlayerImage.ImageFromBase64String(textures["1"]);
             Image player;
-            Image playerDead = BomberCowClient.Properties.Resources.playerDead;
-            Image bomb = BomberCowClient.Properties.Resources.bomb;
-            Image explode = BomberCowClient.Properties.Resources.explode;
+            //Image playerDead = BomberCowClient.Properties.Resources.playerDead;
+            Image bomb = PlayerImage.ImageFromBase64String(textures["bomb"]);
+            Image explode = PlayerImage.ImageFromBase64String(textures["explode"]);
 
             img1 = ResizeImage(img1, imgSize);
             img2 = ResizeImage(img2, imgSize);
             back = ResizeImage(back, imgSize);
-            playerDead = ResizeImage(playerDead, imgSize);
+            //playerDead = ResizeImage(playerDead, imgSize);
             bomb = ResizeImage(bomb, imgSize);
             explode = ResizeImage(explode, imgSize);
 
@@ -172,11 +177,11 @@ namespace BomberCowClient
                             g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
                         }
 
-                        // Draw dead player
-                        if (oplayer.PlayerState == 2)
-                        {
-                            g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
-                        }
+                        //// Draw dead player
+                        //if (oplayer.PlayerState == 2)
+                        //{
+                        //    g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                        //}
 
                         // Draw name
                         StringFormat stringFormat = new StringFormat();
@@ -364,6 +369,20 @@ namespace BomberCowClient
                         lstChat.RemoveAt(0);
                     }
                     lstChat.Add(message + "&" + status);
+                }
+            }
+        }
+
+        public void settextures(string[] sTextures)
+        {
+            string[] sSplitTex;
+
+            foreach (string sTexture in sTextures)
+            {
+                if (sTexture != "")
+                {
+                    sSplitTex = sTexture.Split(':');
+                    textures.Add(sSplitTex[0], sSplitTex[1]);
                 }
             }
         }

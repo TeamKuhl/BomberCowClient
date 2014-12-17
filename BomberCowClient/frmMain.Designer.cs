@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtdummy = new System.Windows.Forms.TextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtdummy
@@ -40,28 +39,8 @@
             this.txtdummy.Name = "txtdummy";
             this.txtdummy.Size = new System.Drawing.Size(10, 20);
             this.txtdummy.TabIndex = 0;
+            this.txtdummy.TextChanged += new System.EventHandler(this.txtdummy_TextChanged);
             this.txtdummy.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtdummy_KeyDown);
-            this.txtdummy.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtdummy_KeyUp);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(12, 12);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 95);
-            this.listBox1.TabIndex = 1;
-            this.listBox1.Visible = false;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 113);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // frmMain
             // 
@@ -70,14 +49,13 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(325, 322);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.txtdummy);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmMain";
             this.ShowInTaskbar = false;
-            this.Text = "BomberCow";
+            this.Text = "BomberCow v0.1 Beta";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -90,8 +68,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtdummy;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button1;
 
 
 
