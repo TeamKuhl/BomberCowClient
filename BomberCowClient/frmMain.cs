@@ -322,6 +322,7 @@ namespace BomberCowClient
                             {
                                 oPlayer.State = 2;
                                 BomberMap.addchat("† " + sDeadPlayer + " was killed by " + oPlayer.Name, 1);
+
                                 // Reload Map
                                 if (sMapString != null)
                                 {
@@ -343,6 +344,12 @@ namespace BomberCowClient
                             BomberMap.addchat(oPlayer.Name + " won the game", 1);
                             break;
                         }
+                    }
+
+                    // Reload Map
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
