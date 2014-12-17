@@ -140,8 +140,8 @@ namespace BomberCowClient
                 }
             }
 
-            try
-            {
+            //try
+            //{
                 // Draw items
                 foreach (Item oitem in mainForm.items)
                 {
@@ -154,14 +154,14 @@ namespace BomberCowClient
                         g.DrawImage(explode, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
                     }
                 }
-            }
-            catch
-            {
-                // unbehandelter Fehler
-            }
+            //}
+            //catch
+            //{
+            //    // unbehandelter Fehler
+            //}
 
-            try
-            {
+            //try
+            //{
                 // Draw player
                 foreach (Player oplayer in mainForm.players)
                 {
@@ -198,11 +198,11 @@ namespace BomberCowClient
                         g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat);
                     }
                 }
-            }
-            catch
-            {
-                // unbehandelter Fehler
-            }
+            //}
+            //catch
+            //{
+            //    // unbehandelter Fehler
+            //}
 
             // Draw playerlist
             if (bshowStats)
