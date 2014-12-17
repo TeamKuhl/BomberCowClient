@@ -277,7 +277,7 @@ namespace BomberCowClient
                     }
                 }
 
-                RectangleF rects = new RectangleF(0, ((MapYSize * BlockSize) + (counter * textYSize)) + HUDYSize, MapXSize * BlockSize, (MapYSize * BlockSize) + ChatYSize * HUDYSize);
+                RectangleF rects = new RectangleF(0, ((MapYSize * BlockSize) + (counter * textYSize)) + HUDYSize, MapXSize * BlockSize, 20);
 
                 if (iState == 1)
                 {
