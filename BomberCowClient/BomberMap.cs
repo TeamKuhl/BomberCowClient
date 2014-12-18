@@ -103,9 +103,15 @@ namespace BomberCowClient
                 mainForm.ClientSize = new Size(MapXSize * BlockSize, MapYSize * BlockSize + ChatYSize + HUDYSize);
             }
 
-
             // Clear
-            g.Clear(ColorTranslator.FromHtml("#031634"));
+            if (mainForm.InvokeRequired)
+            {
+                mainForm.Invoke(new emptyFunction(delegate() { g.Clear(ColorTranslator.FromHtml("#031634")); }));
+            }
+            else
+            {
+                g.Clear(ColorTranslator.FromHtml("#031634"));
+            }
 
             // Draw map
             for (int yCounter = 0; yCounter < MapYSize; yCounter++)
@@ -115,21 +121,33 @@ namespace BomberCowClient
                 for (int xCounter = 0; xCounter < MapXSize; xCounter++)
                 {
                     // Add textures
-                    g.DrawImage(textures[currow[xCounter]], new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
+                    if (mainForm.InvokeRequired)
+                    {
+                        mainForm.Invoke(new emptyFunction(delegate() { g.DrawImage(textures[currow[xCounter]], new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize)); }));
+                    }
+                    else
+                    {
+                        g.DrawImage(textures[currow[xCounter]], new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
+                    }
                 }
             }
 
             // Draw items
             foreach (Item oitem in mainForm.items)
             {
-                g.DrawImage(textures[oitem.type], new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
+                if (mainForm.InvokeRequired)
+                {
+                    mainForm.Invoke(new emptyFunction(delegate() { g.DrawImage(textures[oitem.type], new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize)); }));
+                }
+                else
+                {
+                    g.DrawImage(textures[oitem.type], new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
+                }
             }
 
             // Draw player
             foreach (Player oplayer in mainForm.players)
             {
-
-
                 if (oplayer.PlayerState == 1)
                 {
                     // Draw living player
@@ -138,7 +156,15 @@ namespace BomberCowClient
                         if (oplayer.Skin != null)
                         {
                             player = oplayer.Skin;
-                            g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+
+                            if (mainForm.InvokeRequired)
+                            {
+                                mainForm.Invoke(new emptyFunction(delegate() { g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize)); }));
+                            }
+                            else
+                            {
+                                g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                            }
                         }
                     }
 
@@ -160,7 +186,14 @@ namespace BomberCowClient
 
                     RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - 32, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, BlockSize + 64, BlockSize);
 
-                    g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat);
+                    if (mainForm.InvokeRequired)
+                    {
+                        mainForm.Invoke(new emptyFunction(delegate() { g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat); }));
+                    }
+                    else
+                    {
+                        g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat);
+                    }
                 }
             }
 
@@ -170,8 +203,20 @@ namespace BomberCowClient
                 Pen borderpen = new Pen(Color.FromArgb(255, 3, 22, 52), 20);
                 SolidBrush backbrush = new SolidBrush(Color.FromArgb(150, 3, 54, 73));
                 Rectangle rect = new Rectangle(10, 10 + HUDYSize, (MapXSize * BlockSize) - 20, (BlockSize * MapYSize) - 20);
-                g.DrawRectangle(borderpen, rect);
-                g.FillRectangle(backbrush, rect);
+
+                if (mainForm.InvokeRequired)
+                {
+                    mainForm.Invoke(new emptyFunction(delegate()
+                        {
+                            g.DrawRectangle(borderpen, rect);
+                            g.FillRectangle(backbrush, rect);
+                        }));
+                }
+                else
+                {
+                    g.DrawRectangle(borderpen, rect);
+                    g.FillRectangle(backbrush, rect);
+                }
 
                 int Lstcounter = 0;
                 foreach (Player oPlayer in mainForm.players)
@@ -190,13 +235,35 @@ namespace BomberCowClient
 
                     if (oPlayer.PlayerState == 1)
                     {
-                        g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textlivebrush, rects, stringFormat);
-                        g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textlivebrush, rects, stringFormat1);
+                        if (mainForm.InvokeRequired)
+                        {
+                            mainForm.Invoke(new emptyFunction(delegate()
+                            {
+                                g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textlivebrush, rects, stringFormat);
+                                g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textlivebrush, rects, stringFormat1);
+                            }));
+                        }
+                        else
+                        {
+                            g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textlivebrush, rects, stringFormat);
+                            g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textlivebrush, rects, stringFormat1);
+                        }
                     }
                     else
                     {
-                        g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textdeadbrush, rects, stringFormat);
-                        g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textdeadbrush, rects, stringFormat1);
+                        if (mainForm.InvokeRequired)
+                        {
+                            mainForm.Invoke(new emptyFunction(delegate()
+                            {
+                                g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textdeadbrush, rects, stringFormat);
+                                g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textdeadbrush, rects, stringFormat1);
+                            }));
+                        }
+                        else
+                        {
+                            g.DrawString(oPlayer.Name, new Font("Tahoma", 20), textdeadbrush, rects, stringFormat);
+                            g.DrawString("Score:" + oPlayer.Score + " Kills:" + oPlayer.Kills + " Deaths:" + oPlayer.Deaths, new Font("Tahoma", 16), textdeadbrush, rects, stringFormat1);
+                        }
                     }
                     Lstcounter++;
                 }
@@ -214,7 +281,15 @@ namespace BomberCowClient
                         stringFormat.LineAlignment = StringAlignment.Center;
 
                         RectangleF rects = new RectangleF(0, 0, MapXSize * BlockSize, MapYSize * BlockSize);
-                        g.DrawString(oplayer.Name + " won", new Font("Tahoma", 60), Brushes.Green, rects, stringFormat);
+
+                        if (mainForm.InvokeRequired)
+                        {
+                            mainForm.Invoke(new emptyFunction(delegate() { g.DrawString(oplayer.Name + " won", new Font("Tahoma", 60), Brushes.Green, rects, stringFormat); }));
+                        }
+                        else
+                        {
+                            g.DrawString(oplayer.Name + " won", new Font("Tahoma", 60), Brushes.Green, rects, stringFormat);
+                        }
                     }
                 }
             }
@@ -246,15 +321,36 @@ namespace BomberCowClient
 
                 if (iState == 1)
                 {
-                    g.DrawString(sMessage, new Font("Tahoma", 10), sbSystem, rects, stringFormat2);
+                    if (mainForm.InvokeRequired)
+                    {
+                        mainForm.Invoke(new emptyFunction(delegate() { g.DrawString(sMessage, new Font("Tahoma", 10), sbSystem, rects, stringFormat2); }));
+                    }
+                    else
+                    {
+                        g.DrawString(sMessage, new Font("Tahoma", 10), sbSystem, rects, stringFormat2);
+                    }
                 }
                 if (iState == 2)
                 {
-                    g.DrawString(sMessage, new Font("Tahoma", 10), sbSystem, rects, stringFormat2);
+                    if (mainForm.InvokeRequired)
+                    {
+                        mainForm.Invoke(new emptyFunction(delegate() { g.DrawString(sMessage, new Font("Tahoma", 10), sbSystem, rects, stringFormat2); }));
+                    }
+                    else
+                    {
+                        g.DrawString(sMessage, new Font("Tahoma", 10), sbSystem, rects, stringFormat2);
+                    }
                 }
                 if (iState == 3)
                 {
-                    g.DrawString(sMessage, new Font("Tahoma", 10), sbChat, rects, stringFormat2);
+                    if (mainForm.InvokeRequired)
+                    {
+                        mainForm.Invoke(new emptyFunction(delegate() { g.DrawString(sMessage, new Font("Tahoma", 10), sbChat, rects, stringFormat2); }));
+                    }
+                    else
+                    {
+                        g.DrawString(sMessage, new Font("Tahoma", 10), sbChat, rects, stringFormat2);
+                    }
                 }
                 counter++;
             }
@@ -263,24 +359,54 @@ namespace BomberCowClient
             {
                 Pen redPen = new Pen(ColorTranslator.FromHtml("#036564"), 3);
                 Rectangle rect = new Rectangle(1, ((MapYSize * BlockSize) + ChatYSize - 30) + HUDYSize, (MapXSize * BlockSize) - 3, 28);
-                g.DrawRectangle(redPen, rect);
+
+                if (mainForm.InvokeRequired)
+                {
+                    mainForm.Invoke(new emptyFunction(delegate() { g.DrawRectangle(redPen, rect); }));
+                }
+                else
+                {
+                    g.DrawRectangle(redPen, rect);
+                }
 
                 RectangleF rects = new RectangleF(2, ((MapYSize * BlockSize) + ChatYSize - 29) + HUDYSize, (MapXSize * BlockSize) - 4, 26);
-                g.DrawString(inputMsg, new Font("Tahoma", 14), sbChat, rects, stringFormat2);
+
+                if (mainForm.InvokeRequired)
+                {
+                    mainForm.Invoke(new emptyFunction(delegate() { g.DrawString(inputMsg, new Font("Tahoma", 14), sbChat, rects, stringFormat2); }));
+                }
+                else
+                {
+                    g.DrawString(inputMsg, new Font("Tahoma", 14), sbChat, rects, stringFormat2);
+                }
             }
             else
             {
                 Pen blackPen = new Pen(ColorTranslator.FromHtml("#033649"), 3);
                 Rectangle rect = new Rectangle(1, ((MapYSize * BlockSize) + ChatYSize - 30) + HUDYSize, (MapXSize * BlockSize) - 3, 28);
-                g.DrawRectangle(blackPen, rect);
+
+                if (mainForm.InvokeRequired)
+                {
+                    mainForm.Invoke(new emptyFunction(delegate() { g.DrawRectangle(blackPen, rect); }));
+                }
+                else
+                {
+                    g.DrawRectangle(blackPen, rect);
+                }
             }
 
-            g.Dispose();
+            if (mainForm.InvokeRequired)
+            {
+                mainForm.Invoke(new emptyFunction(delegate() { g.Dispose(); }));
+            }
+            else
+            {
+                g.Dispose();
+            }
 
             // Return complete image
             return map;
         }
-
 
         /// <summary>
         ///     Resize images to fit the map
