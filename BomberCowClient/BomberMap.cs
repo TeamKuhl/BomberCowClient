@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.IO;
 
+
 namespace BomberCowClient
 {
     public delegate void emptyFunction();
@@ -29,6 +30,7 @@ namespace BomberCowClient
         // Player won
         private Boolean bplayerwon = false;
         private string swinnerid;
+
         public void playerwon(string id, Boolean bstate)
         {
             bplayerwon = bstate;
@@ -50,37 +52,55 @@ namespace BomberCowClient
         private Boolean bshowStats = false;
 
         // Textures
-        private Dictionary<string, string> textures = new Dictionary<string, string>();
+        private Dictionary<string, Image> textures = new Dictionary<string, Image>();
+
+        // ImgSize
+        Size imgSize;
 
         public BomberMap(frmMain mainform)
         {
             this.mainForm = mainform;
+            imgSize = new Size(BlockSize, BlockSize);
         }
 
         /// <summary>
         ///     Create or update Map
         /// </summary>
         /// <param name="MapString">MapSting from Server</param>
-        public void createMap(string MapString)
+        public void createMap(string MapString, frmMain aControl)
         {
-            Image mapimg = drawMap(MapString);
-            if (MapExists)
-            {
+           
+            //Image mapimg;
+            //AllPictureBox.Invoke(new emptyFunction(delegate() { mapimg = drawMap(MapString); }));
+            //AllPictureBox.Invoke((MethodInvoker)delegate { mapimg = drawMap(MapString); });
+            //if (MapExists)
+            //{
                 // Reload Mapimage
-                AllPictureBox.Invoke(new emptyFunction(delegate() { AllPictureBox.BackgroundImage = mapimg; }));
-            }
-            else
-            {
-                // Create picturebox
-                AllPictureBox.Location = new Point(0, 0);
-                AllPictureBox.Name = "MapPictureBox";
-                AllPictureBox.Size = new Size(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
-                AllPictureBox.Visible = true;
-                AllPictureBox.BackgroundImage = mapimg;
-                mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
-                //drawPlayer();
-                MapExists = true;
-            }
+                //AllPictureBox.BackgroundImage = drawMap(MapString);
+
+
+
+                mainForm.Invoke(new Action(() =>
+                        {
+                            Image mapimg = drawMap(MapString);
+//                            AllPictureBox.BackgroundImage = mapimg;
+                            mainForm.BackgroundImage = mapimg;
+                        }));
+                  
+               
+            //}
+            //else
+            //{
+            //    // Create picturebox
+            //    AllPictureBox.Location = new Point(0, 0);
+            //    AllPictureBox.Name = "MapPictureBox";
+            //    AllPictureBox.Size = new Size(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
+            //    AllPictureBox.Visible = true;
+            //    //AllPictureBox.BackgroundImage = drawMap(MapString);
+            //    mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
+                 
+            //    MapExists = true;
+            //}
         }
 
         /// <summary>
@@ -97,22 +117,14 @@ namespace BomberCowClient
             MapXSize = currow.Length;
 
             Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
+            
             Graphics g = Graphics.FromImage(map);
-            Size imgSize = new Size(BlockSize, BlockSize);
-            Image img1 = PlayerImage.ImageFromBase64String(textures["0"]);
-            Image img2 = PlayerImage.ImageFromBase64String(textures["2"]);
-            Image back = PlayerImage.ImageFromBase64String(textures["1"]);
-            Image player;
-            //Image playerDead = BomberCowClient.Properties.Resources.playerDead;
-            Image bomb = PlayerImage.ImageFromBase64String(textures["bomb"]);
-            Image explode = PlayerImage.ImageFromBase64String(textures["explode"]);
 
-            img1 = ResizeImage(img1, imgSize);
-            img2 = ResizeImage(img2, imgSize);
-            back = ResizeImage(back, imgSize);
-            //playerDead = ResizeImage(playerDead, imgSize);
-            bomb = ResizeImage(bomb, imgSize);
-            explode = ResizeImage(explode, imgSize);
+            Image player;
+
+            // Form size
+            mainForm.Width = MapXSize * BlockSize + 17;
+            mainForm.Height = MapYSize * BlockSize + 39 + ChatYSize + HUDYSize;
 
             // Clear
             g.Clear(ColorTranslator.FromHtml("#031634"));
@@ -125,35 +137,17 @@ namespace BomberCowClient
                 for (int xCounter = 0; xCounter < MapXSize; xCounter++)
                 {
                     // Add textures
-                    if (currow[xCounter] == "0")
-                    {
-                        g.DrawImage(img1, new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
-                    }
-                    if (currow[xCounter] == "1")
-                    {
-                        g.DrawImage(back, new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
-                    }
-                    if (currow[xCounter] == "2")
-                    {
-                        g.DrawImage(img2, new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
-                    }
+                    g.DrawImage(textures[currow[xCounter]], new Point(xCounter * BlockSize, (yCounter * BlockSize) + HUDYSize));
                 }
             }
 
             //try
             //{
-                // Draw items
-                foreach (Item oitem in mainForm.items)
-                {
-                    if (oitem.type == "bomb")
-                    {
-                        g.DrawImage(bomb, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
-                    }
-                    if (oitem.type == "explode")
-                    {
-                        g.DrawImage(explode, new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
-                    }
-                }
+            // Draw items
+            foreach (Item oitem in mainForm.items)
+            {
+                g.DrawImage(textures[oitem.type], new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
+            }
             //}
             //catch
             //{
@@ -162,42 +156,45 @@ namespace BomberCowClient
 
             //try
             //{
-                // Draw player
-                foreach (Player oplayer in mainForm.players)
+
+            // Draw player
+            foreach (Player oplayer in mainForm.players)
+            {
+
+
+                if (oplayer.PlayerState == 1)
                 {
-
-
+                    // Draw living player
                     if (oplayer.PlayerState == 1)
                     {
-                        // Draw living player
-                        if (oplayer.PlayerState == 1)
+                        if (oplayer.Skin != null)
                         {
                             player = oplayer.Skin;
-                            player = ResizeImage(player, imgSize);
                             g.DrawImage(player, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
                         }
-
-                        //// Draw dead player
-                        //if (oplayer.PlayerState == 2)
-                        //{
-                        //    g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
-                        //}
                     }
-                }
 
-                // Draw names
-                foreach (Player oplayer in mainForm.players)
+                    //// Draw dead player
+                    //if (oplayer.PlayerState == 2)
+                    //{
+                    //    g.DrawImage(playerDead, new Point((oplayer.xPosition - 1) * BlockSize, ((oplayer.yPosition - 1) * BlockSize) + HUDYSize));
+                    //}
+                }
+            }
+
+            // Draw names
+            foreach (Player oplayer in mainForm.players)
+            {
+                if (oplayer.PlayerState == 1)
                 {
-                    if (oplayer.PlayerState == 1)
-                    {
-                        StringFormat stringFormat = new StringFormat();
-                        stringFormat.Alignment = StringAlignment.Center;
+                    StringFormat stringFormat = new StringFormat();
+                    stringFormat.Alignment = StringAlignment.Center;
 
-                        RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - 32, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, BlockSize + 64, BlockSize);
+                    RectangleF rectf = new RectangleF(((oplayer.xPosition - 1) * BlockSize) - 32, (((oplayer.yPosition - 1) * BlockSize) - 13) + HUDYSize, BlockSize + 64, BlockSize);
 
-                        g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat);
-                    }
+                    g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat);
                 }
+            }
             //}
             //catch
             //{
@@ -316,8 +313,6 @@ namespace BomberCowClient
             }
 
             g.Dispose();
-            img1.Dispose();
-            img2.Dispose();
 
             // Return complete image
             return map;
@@ -330,10 +325,12 @@ namespace BomberCowClient
         /// <param name="image">original image</param>
         /// <param name="size">size to scale to</param>
         /// <returns>resized image</returns>
-        private static Image ResizeImage(Image image, Size size)
+        public Image ResizeImage(Image image)
         {
             int newWidth;
             int newHeight;
+
+            Size size = imgSize;
 
             int originalWidth = image.Width;
             int originalHeight = image.Height;
@@ -387,7 +384,8 @@ namespace BomberCowClient
                 if (sTexture != "")
                 {
                     sSplitTex = sTexture.Split(':');
-                    textures.Add(sSplitTex[0], sSplitTex[1]);
+                    textures.Add(sSplitTex[0], PlayerImage.ImageFromBase64String(sSplitTex[1]));
+                    textures[sSplitTex[0]] = ResizeImage(textures[sSplitTex[0]]);
                 }
             }
         }
