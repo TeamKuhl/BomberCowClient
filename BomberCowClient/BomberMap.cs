@@ -67,11 +67,11 @@ namespace BomberCowClient
         /// <param name="MapString">MapSting from Server</param>
         public void createMap(string MapString)
         {
-            mainForm.Invoke(new Action(() =>
-                    {
-                        Image mapimg = drawMap(MapString);
-                        mainForm.BackgroundImage = mapimg;
-                    }));
+            //mainForm.Invoke(new Action(() =>
+            //        {
+            Image mapimg = drawMap(MapString);
+            mainForm.BackgroundImage = mapimg;
+            //}));
         }
 
         /// <summary>
@@ -94,8 +94,15 @@ namespace BomberCowClient
             Image player;
 
             // Form size
-            mainForm.Width = MapXSize * BlockSize + 17;
-            mainForm.Height = MapYSize * BlockSize + 39 + ChatYSize + HUDYSize;
+            if (mainForm.InvokeRequired)
+            {
+                mainForm.Invoke(new emptyFunction(delegate() { mainForm.ClientSize = new Size(MapXSize * BlockSize, MapYSize * BlockSize + ChatYSize + HUDYSize); }));
+            }
+            else
+            {
+                mainForm.ClientSize = new Size(MapXSize * BlockSize, MapYSize * BlockSize + ChatYSize + HUDYSize);
+            }
+
 
             // Clear
             g.Clear(ColorTranslator.FromHtml("#031634"));
