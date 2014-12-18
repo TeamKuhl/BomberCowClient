@@ -39,9 +39,6 @@ namespace BomberCowClient
         // Mapstring
         private string sMapString;
 
-        // Set size of form
-        private Boolean fitForm = false;
-
         // ID des clients
         private string myid;
 
@@ -148,7 +145,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -167,7 +164,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -178,7 +175,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -193,7 +190,7 @@ namespace BomberCowClient
                     }
 
                     sMapString = message;
-                    BomberMap.createMap(sMapString, this);
+                    BomberMap.createMap(sMapString);
 
                     //if (!fitForm)
                     //{
@@ -215,7 +212,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -234,7 +231,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -265,7 +262,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -292,7 +289,7 @@ namespace BomberCowClient
                                 // Reload Map
                                 if (sMapString != null)
                                 {
-                                    BomberMap.createMap(sMapString, this);
+                                    BomberMap.createMap(sMapString);
                                 }
                                 break;
                             }
@@ -310,7 +307,7 @@ namespace BomberCowClient
                                 // Reload Map
                                 if (sMapString != null)
                                 {
-                                    BomberMap.createMap(sMapString, this);
+                                    BomberMap.createMap(sMapString);
                                 }
                                 break;
                             }
@@ -326,7 +323,7 @@ namespace BomberCowClient
                                 // Reload Map
                                 if (sMapString != null)
                                 {
-                                    BomberMap.createMap(sMapString, this);
+                                    BomberMap.createMap(sMapString);
                                 }
                                 break;
                             }
@@ -349,7 +346,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -390,7 +387,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
 
                     ParameterizedThreadStart pts = new ParameterizedThreadStart(this.explosionHandler);
@@ -417,7 +414,7 @@ namespace BomberCowClient
                     // Reload Map
                     if (sMapString != null)
                     {
-                        BomberMap.createMap(sMapString, this);
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -457,7 +454,7 @@ namespace BomberCowClient
             // Reload Map
             if (sMapString != null)
             {
-                BomberMap.createMap(sMapString, this);
+                BomberMap.createMap(sMapString);
             }
         }
 
@@ -561,7 +558,7 @@ namespace BomberCowClient
             // Reload Map
             if (sMapString != null)
             {
-                BomberMap.createMap(sMapString, this);
+                BomberMap.createMap(sMapString);
             }
         }
 
@@ -576,7 +573,7 @@ namespace BomberCowClient
                 // Reload Map
                 if (sMapString != null)
                 {
-                    BomberMap.createMap(sMapString, this);
+                    BomberMap.createMap(sMapString);
                 }
             }
             if (e.KeyCode == Keys.Return)
@@ -600,7 +597,7 @@ namespace BomberCowClient
                 // Reload Map
                 if (sMapString != null)
                 {
-                    BomberMap.createMap(sMapString, this);
+                    BomberMap.createMap(sMapString);
                 }
             }
         }
@@ -614,7 +611,7 @@ namespace BomberCowClient
                 // Reload Map
                 if (sMapString != null)
                 {
-                    BomberMap.createMap(sMapString, this);
+                    BomberMap.createMap(sMapString);
                 }
             }
         }
@@ -634,7 +631,7 @@ namespace BomberCowClient
             // Reload Map
             if (sMapString != null)
             {
-                BomberMap.createMap(sMapString, this);
+                BomberMap.createMap(sMapString);
             }
         }
     }

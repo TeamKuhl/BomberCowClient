@@ -46,8 +46,6 @@ namespace BomberCowClient
         private Boolean getInput = false;
         private string inputMsg;
 
-        private Boolean MapExists = false;
-
         // PlayerStats
         private Boolean bshowStats = false;
 
@@ -67,40 +65,13 @@ namespace BomberCowClient
         ///     Create or update Map
         /// </summary>
         /// <param name="MapString">MapSting from Server</param>
-        public void createMap(string MapString, frmMain aControl)
+        public void createMap(string MapString)
         {
-           
-            //Image mapimg;
-            //AllPictureBox.Invoke(new emptyFunction(delegate() { mapimg = drawMap(MapString); }));
-            //AllPictureBox.Invoke((MethodInvoker)delegate { mapimg = drawMap(MapString); });
-            //if (MapExists)
-            //{
-                // Reload Mapimage
-                //AllPictureBox.BackgroundImage = drawMap(MapString);
-
-
-
-                mainForm.Invoke(new Action(() =>
-                        {
-                            Image mapimg = drawMap(MapString);
-//                            AllPictureBox.BackgroundImage = mapimg;
-                            mainForm.BackgroundImage = mapimg;
-                        }));
-                  
-               
-            //}
-            //else
-            //{
-            //    // Create picturebox
-            //    AllPictureBox.Location = new Point(0, 0);
-            //    AllPictureBox.Name = "MapPictureBox";
-            //    AllPictureBox.Size = new Size(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
-            //    AllPictureBox.Visible = true;
-            //    //AllPictureBox.BackgroundImage = drawMap(MapString);
-            //    mainForm.Invoke(new emptyFunction(delegate() { mainForm.Controls.Add(AllPictureBox); }));
-                 
-            //    MapExists = true;
-            //}
+            mainForm.Invoke(new Action(() =>
+                    {
+                        Image mapimg = drawMap(MapString);
+                        mainForm.BackgroundImage = mapimg;
+                    }));
         }
 
         /// <summary>
@@ -117,7 +88,7 @@ namespace BomberCowClient
             MapXSize = currow.Length;
 
             Bitmap map = new Bitmap(MapXSize * BlockSize, (MapYSize * BlockSize) + HUDYSize + ChatYSize);
-            
+
             Graphics g = Graphics.FromImage(map);
 
             Image player;
@@ -141,21 +112,11 @@ namespace BomberCowClient
                 }
             }
 
-            //try
-            //{
             // Draw items
             foreach (Item oitem in mainForm.items)
             {
                 g.DrawImage(textures[oitem.type], new Point((oitem.xPosition - 1) * BlockSize, ((oitem.yPosition - 1) * BlockSize) + HUDYSize));
             }
-            //}
-            //catch
-            //{
-            //    // unbehandelter Fehler
-            //}
-
-            //try
-            //{
 
             // Draw player
             foreach (Player oplayer in mainForm.players)
@@ -195,11 +156,6 @@ namespace BomberCowClient
                     g.DrawString(oplayer.Name, new Font("Tahoma", 7), Brushes.Green, rectf, stringFormat);
                 }
             }
-            //}
-            //catch
-            //{
-            //    // unbehandelter Fehler
-            //}
 
             // Draw playerlist
             if (bshowStats)
