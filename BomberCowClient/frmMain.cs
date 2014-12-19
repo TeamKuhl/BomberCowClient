@@ -39,9 +39,6 @@ namespace BomberCowClient
         // Mapstring
         private string sMapString;
 
-        // Set size of form
-        private Boolean fitForm = false;
-
         // ID des clients
         private string myid;
 
@@ -115,6 +112,8 @@ namespace BomberCowClient
                     myid = message;
 
                     // Set Client name = PlayerName
+                    client.send("GetTextures", "");
+                    client.send("GetModelList", "");
                     client.send("PlayerInfo", PlayerName);
                     break;
 
@@ -126,10 +125,8 @@ namespace BomberCowClient
                     {
                         BomberMap.addchat("You joined the Server", 1);
                         //client.send("GetPlayerList", "");
-                        client.send("GetTextures", "");
                         client.send("GetMap", "");
                         //client.send("GetPlayerList", "");
-                        client.send("GetModelList", "");
 
                     }
                     else
@@ -322,6 +319,7 @@ namespace BomberCowClient
                             {
                                 oPlayer.State = 2;
                                 BomberMap.addchat("† " + sDeadPlayer + " was killed by " + oPlayer.Name, 1);
+
                                 // Reload Map
                                 if (sMapString != null)
                                 {
@@ -343,6 +341,12 @@ namespace BomberCowClient
                             BomberMap.addchat(oPlayer.Name + " won the game", 1);
                             break;
                         }
+                    }
+
+                    // Reload Map
+                    if (sMapString != null)
+                    {
+                        BomberMap.createMap(sMapString);
                     }
                     break;
 
@@ -403,7 +407,7 @@ namespace BomberCowClient
                     {
                         if (oplayer.ID == sImageDummy[0])
                         {
-                            oplayer.Skin = PlayerImage.ImageFromBase64String(sImageDummy[1]);
+                            oplayer.Skin = BomberMap.ResizeImage(PlayerImage.ImageFromBase64String(sImageDummy[1]));
                         }
                     }
 
@@ -618,7 +622,12 @@ namespace BomberCowClient
             {
                 BomberMap.addInput(txtdummy.Text, true);
             }
-
+            else
+            {
+                BomberMap.addInput("", false);
+                txtdummy.Enabled = false;
+                txtdummy.Text = "";
+            }
             // Reload Map
             if (sMapString != null)
             {

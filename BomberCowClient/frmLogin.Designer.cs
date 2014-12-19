@@ -45,6 +45,7 @@
             this.txtName.Size = new System.Drawing.Size(100, 20);
             this.txtName.TabIndex = 0;
             this.txtName.Tag = "";
+            this.txtName.Text = "Testuser";
             this.txtName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
             // btnLogin
@@ -63,6 +64,7 @@
             this.txtIp.Name = "txtIp";
             this.txtIp.Size = new System.Drawing.Size(100, 20);
             this.txtIp.TabIndex = 2;
+            this.txtIp.Text = "127.0.0.1";
             this.txtIp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtIp_KeyDown);
             // 
             // lblIp
